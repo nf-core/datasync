@@ -18,6 +18,8 @@
 
 ## Introduction
 
+[WIP] WORK IN PROGRESS AND NOT YET STABLE - DO NOT USE FOR PRODUCTIVE SETTINGS YET
+
 **nf-core/datasync** is a system operation pipeline that provides several workflows for handling system operation / automation tasks that are commonly helpful for various tasks in large data processing / analysis facilities. This includes:
 
 - Data Synchronization & Checksum generation
