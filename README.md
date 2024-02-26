@@ -18,51 +18,37 @@
 
 ## Introduction
 
-**nf-core/datasync** is a bioinformatics pipeline that ...
+**nf-core/datasync** is a system operation pipeline that provides several workflows for handling system operation / automation tasks that are commonly helpful for various tasks in large data processing / analysis facilities. This includes:
 
-<!-- TODO nf-core:
-   Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
-   major pipeline sections and the types of output it produces. You're giving an overview to someone new
-   to nf-core here, in 15-20 seconds. For an example, see https://github.com/nf-core/rnaseq/blob/master/README.md#introduction
--->
+- Data Synchronization & Checksum generation
+  - Configurable: Can provide YAML file which files to include or exclude from sync
+  - Checksum backend: Can configure which backend to use for checksum generation (e.g. sha256sum, md5, ...)
+- Data Integrity validation
+  - Provided with a directory to check, can validate that file(s) found are matching checksums from Synchronization subworkflow
+- Data Archival & Deletion
+  - Can check source and target location for existence of file(s) and decide based on user configurable rules whether files can be considered archived
+    - Timestamp older than X days
+    - Checksums match Integrity validation report
+    - Create empty files to make it obvious that archival was performed
+    - Optionally: Delete files or create list of files to be deleted for manual deletion process
 
-<!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core
-     workflows use the "tube map" design for that. See https://nf-co.re/docs/contributing/design_guidelines#examples for examples.   -->
-<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
-
-1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
-2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+The pipeline can be configured by users to execute any of the aforementioned subworkflows and then produces a report using MultiQC custom content that also serves as a report of _what_ was done by the pipeline for documentation purposes.
 
 ## Usage
 
 > [!NOTE]
 > If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
 
-<!-- TODO nf-core: Describe the minimum required steps to execute the pipeline, e.g. how to prepare samplesheets.
-     Explain what rows and columns represent. For instance (please edit as appropriate):
-
-First, prepare a samplesheet with your input data that looks as follows:
-
-`samplesheet.csv`:
-
-```csv
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-```
-
-Each row represents a fastq file (single-end) or a pair of fastq files (paired end).
-
--->
-
 Now, you can run the pipeline using:
-
-<!-- TODO nf-core: update the following command to include all required parameters for a minimal example -->
 
 ```bash
 nextflow run nf-core/datasync \
    -profile <docker/singularity/.../institute> \
    --input samplesheet.csv \
    --outdir <OUTDIR>
+   --sync
+   --sync_backend 'sha256'
+   --sync_done true #Creates SYNC_DONE file when done in each folder
 ```
 
 > [!WARNING]
