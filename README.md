@@ -23,6 +23,7 @@
 - Data Synchronization & Checksum generation
   - Configurable: Can provide YAML file which files to include or exclude from sync
   - Checksum backend: Can configure which backend to use for checksum generation (e.g. sha256sum, md5, ...)
+  - Configurable whether to include (sub-) folders in the sync or not (search for checkpoint files, e.g. has to have DEMUX_DONE that signals a demultiplexing run was finished & successfully copied)
 - Data Integrity validation
   - Provided with a directory to check, can validate that file(s) found are matching checksums from Synchronization subworkflow
 - Data Archival & Deletion
