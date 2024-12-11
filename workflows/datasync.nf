@@ -21,6 +21,7 @@ workflow DATASYNC {
     take:
     ch_samplesheet // channel: samplesheet read in from --input
     workflow_type
+
     main:
 
     ch_versions = Channel.empty()
@@ -28,9 +29,12 @@ workflow DATASYNC {
 
     if(workflow_type == "checksum_verify") {
         CHECKSUM_VERIFY(ch_samplesheet)
+        ch_versions = ch_versions.mix(CHECKSUM_VERIFY.out.versions)
+        ch_multiqc_files = ch_multiqc_files.mix(CHECKSUM_VERIFY.out.multiqc_files)
     } else {
         error "Not Implemented"
     }
+
 
     //
     // Collate and save software versions
@@ -84,7 +88,8 @@ workflow DATASYNC {
         []
     )
 
-    emit:multiqc_report = MULTIQC.out.report.toList() // channel: /path/to/multiqc_report.html
+    emit:
+    multiqc_report = MULTIQC.out.report.toList() // channel: /path/to/multiqc_report.html
     versions       = ch_versions                 // channel: [ path(versions.yml) ]
 
 }
