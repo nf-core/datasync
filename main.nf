@@ -37,25 +37,7 @@ params.fasta = getGenomeAttribute('fasta')
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-//
-// WORKFLOW: Run main analysis pipeline depending on type of input
-//
-workflow NFCORE_DATASYNC {
 
-    take:
-    samplesheet // channel: samplesheet read in from --input
-
-    main:
-
-    //
-    // WORKFLOW: Run pipeline
-    //
-    DATASYNC (
-        samplesheet
-    )
-    emit:
-    multiqc_report = DATASYNC.out.multiqc_report // channel: /path/to/multiqc_report.html
-}
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
@@ -80,8 +62,9 @@ workflow {
     //
     // WORKFLOW: Run main workflow
     //
-    NFCORE_DATASYNC (
-        PIPELINE_INITIALISATION.out.samplesheet
+    DATASYNC (
+        PIPELINE_INITIALISATION.out.samplesheet,
+        params.workflow_type
     )
     //
     // SUBWORKFLOW: Run completion tasks
@@ -93,7 +76,7 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
-        NFCORE_DATASYNC.out.multiqc_report
+        DATASYNC.out.multiqc_report
     )
 }
 

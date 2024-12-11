@@ -3,12 +3,12 @@
     IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-include { MULTIQC                } from '../modules/nf-core/multiqc/main'
-include { CHECKSUM_VERIFY } from "../subworkflows/local/checksum_verify"
+include { SHA256SUM_CHECK } from "../../modules/local/sha256sum/main"
+include { MULTIQC                } from '../../modules/nf-core/multiqc/main'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
-include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_datasync_pipeline'
+include { paramsSummaryMultiqc   } from '../nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML } from '../nf-core/utils_nfcore_pipeline'
+include { methodsDescriptionText } from '../local/utils_nfcore_datasync_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -16,21 +16,17 @@ include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-workflow DATASYNC {
+workflow CHECKSUM_VERIFY {
 
     take:
     ch_samplesheet // channel: samplesheet read in from --input
-    workflow_type
     main:
 
+    ch_samplesheet.view()
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
-    if(workflow_type == "checksum_verify") {
-        CHECKSUM_VERIFY(ch_samplesheet)
-    } else {
-        error "Not Implemented"
-    }
+
 
     //
     // Collate and save software versions
