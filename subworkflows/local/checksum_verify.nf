@@ -16,24 +16,6 @@ include { methodsDescriptionText } from '../local/utils_nfcore_datasync_pipeline
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-def splitChecksumFile(f, batchsize) {
-    lines = []
-    f.eachLine { line, index ->
-        def parts = line.split(/\s+/)
-        lines.add([parts[0], parts[1], String.format('%06d', (index % batchsize) + 1)])
-    }
-    return lines.collate(batchsize)
-}
-
-def makeRenameScript(batch) {
-    script = []
-    script.add("#!/bin/bash -euo pipefail")
-    script.add("mkdir -p work")
-    batch.each { checksum, filename, index ->
-        script.add("mkdir -p work/\$(dirname '${filename}') && mv files/${index} 'work/${filename}'")
-    }
-    return script.join("\n")
-}
 
 workflow CHECKSUM_VERIFY {
 
@@ -45,27 +27,21 @@ workflow CHECKSUM_VERIFY {
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
-    ch_batches = ch_samplesheet.map{ meta, path, checksum_file ->
-        splitChecksumFile(checksum_file, params.chunksize).withIndex().collect {
-            chunk, index -> [meta, chunk]
-        }
-    }.flatMap { meta, chunk -> tuple(meta, chunk)}
-    // ch_batches.view()
-    ch_scripts = ch_batches.map{ meta, chunk -> [meta, makeRenameScript(chunk)] }
-    // ch_scripts.view()
-    ch_files = ch_batches.join(ch_samplesheet).map{ meta, chunk, path, checksum_file ->
-        [meta, chunk.collect{ checksum, filename, idx -> file("${path}/${filename}")}]
+    ch_chunks = ch_samplesheet.flatMap { meta, path, checksum_file ->
+        checksum_file.splitText( by: params.chunksize, file: true).collect{ it -> [meta, path, it]}
     }
-    ch_files.view()
-    // ch_files = ch_batches.map{
-    //     meta, path, chunk -> chunk.each{
-    //         checksum, filename, numeric_id ->
-    //             files = []
-    //             files.add(file("${path}/${filename}", checkIfExists:true))
-    //     }
-    // }
-    // ch_files.view()
-    // SHA256SUM_CHECK([[:], ["foo/test.txt", "foo/bar.txt"], [file("foo/test.txt"), file("foo/bar.txt")], []])
+    SHA256SUM_CHECK(ch_chunks)
+
+    // collate reports from chunks
+    SHA256SUM_CHECK.out.report.collectFile(storeDir: "${params.outdir}/reports"){ meta, report -> ["${meta.id}.report.txt", report]}
+
+    // check if verification was sucessful (= all processes exited with code 0)
+    exit_codes = SHA256SUM_CHECK.out.exit_code.groupTuple().map{ meta, exit_codes -> [meta, exit_codes.every{ it == "0" }] }.map{
+        meta, status -> if(!status) {
+            log.warn("Checksum verifycation failed for ${meta.id}!")
+        }
+    }
+
 
     emit:
     versions      = ch_versions                 // channel: [ path(versions.yml) ]
