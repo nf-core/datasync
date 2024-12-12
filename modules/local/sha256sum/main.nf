@@ -9,13 +9,15 @@ process SHA256SUM_CHECK {
         'nf-core/ubuntu:20.04' }"
 
     input:
-    tuple val(meta), path(checksum_file)
+    tuple val(meta), path(checksum_file), path("rename.sh"), path("files/??????"),
 
     output:
     tuple val(meta), path(report)
 
     script:
     """
-    sha256sum -c ${checksum_file} > ${meta.id}.report.txt
+    bash rename.sh
+
+    cd work && sha256sum -c ${checksum_file} > ../${meta.id}.report.txt
     """
 }

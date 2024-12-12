@@ -13,6 +13,10 @@
                 "errorMessage": "Sample name must be provided and cannot contain spaces",
                 "meta": ["id"]
             },
+            "path": {
+                "type": "string",
+                "format": "path"
+            },
             "checksums": {
                 "type": "string",
                 "format": "file-path",
@@ -20,6 +24,6 @@
                 "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
             }
         },
-        "required": ["id", "checksums"]
+        "required": ["id", "path", "checksums"]
     }
 }
