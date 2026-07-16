@@ -1,1 +1,0 @@
-/home/as32149/agents/AGENTS.md

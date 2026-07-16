@@ -18,18 +18,6 @@
 include { DATASYNC  } from './workflows/datasync'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_datasync_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_datasync_pipeline'
-include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_datasync_pipeline'
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    GENOME PARAMETER VALUES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-// TODO nf-core: Remove this line if you don't need a FASTA file
-//   This is an example of how to use getGenomeAttribute() to fetch parameters
-//   from igenomes.config using `--genome`
-params.fasta = getGenomeAttribute('fasta')
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,7 +44,6 @@ workflow NFCORE_DATASYNC {
         params.multiqc_logo,
         params.multiqc_methods_description,
         params.outdir,
-        params.rclone_output_path,
         params.rclone_config
     )
     emit:

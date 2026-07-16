@@ -10,6 +10,57 @@ report_section_order:
   "nf-core-datasync-summary":
     order: -1002
 
-export_plots: true
+export_plots: false
 
 disable_version_detection: true
+
+custom_data:
+  samplesheet:
+    section_name: "Input Samplesheet"
+    plot_type: "table"
+    file_format: "csv"
+    headers:
+      sample:
+        title: Sample ID
+      input:
+        title: Path to copy
+      output_path:
+        title: Destination path
+      checksum_md5:
+        title: MD5 checksum file
+      checksum_sha:
+        title: Sha256 checksum file
+
+  rclone_checksum_md5:
+    section_name: "RClone MD5 Checksum Report"
+    description: "MD5 input checksum validation"
+    plot_type: "table"
+    file_format: "tsv"
+    pconfig:
+      no_violin: true
+
+  rclone_checksum_sha:
+    section_name: "RClone SHA Checksum Report"
+    description: "SHA input checksum validation"
+    plot_type: "table"
+    file_format: "tsv"
+    pconfig:
+      no_violin: true
+
+  rclone_check:
+    section_name: "Final RClone Check Report"
+    description: "Validation of copied files"
+    plot_type: "table"
+    file_format: "tsv"
+    pconfig:
+      no_violin: true
+
+sp:
+  samplesheet:
+    fn: "samplesheet.csv"
+  rclone_checksum_md5:
+    fn: "*_md5_rclone_checksum_mqc.tsv"
+  rclone_checksum_sha:
+    fn: "*_sha_rclone_checksum_mqc.tsv"
+  rclone_check:
+    fn: "*_rclone_check_mqc.tsv"

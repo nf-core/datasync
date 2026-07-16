@@ -2,31 +2,20 @@
     "-profile test": {
         "content": [
             {
-                "COMPARECHECKSUM": {
-                    "r-base": "4.2.1"
+                "RCLONE_CHECK": {
+                    "rclone": "1.74.3-DEV"
                 },
-                "MD5SUM": {
-                    "md5sum": 9.5
+                "RCLONE_CHECKSUM": {
+                    "rclone": "1.74.3-DEV"
                 },
-                "SHASUM": {
-                    "sha256sum": 9.5
+                "RCLONE_COPY": {
+                    "rclone": "1.65.0-DEV"
                 },
                 "Workflow": {
                     "nf-core/datasync": "v1.0dev"
                 }
             },
             [
-                "comparechecksum",
-                "comparechecksum/Illumina_annotation.checksum_summary.csv",
-                "comparechecksum/Illumina_annotation.checksum_validation.csv",
-                "comparechecksum/benchmark_bed.checksum_summary.csv",
-                "comparechecksum/benchmark_bed.checksum_validation.csv",
-                "comparechecksum/test_fastq.checksum_summary.csv",
-                "comparechecksum/test_fastq.checksum_validation.csv",
-                "md5sum",
-                "md5sum/Illumina_annotation.md5",
-                "md5sum/benchmark_bed.md5",
-                "md5sum/test_fastq.md5",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -34,27 +23,43 @@
                 "multiqc/multiqc_data/multiqc.parquet",
                 "multiqc/multiqc_data/multiqc_citations.txt",
                 "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_rclone_check.txt",
+                "multiqc/multiqc_data/multiqc_rclone_checksum_md5.txt",
+                "multiqc/multiqc_data/multiqc_samplesheet.txt",
                 "multiqc/multiqc_data/multiqc_software_versions.txt",
                 "multiqc/multiqc_data/multiqc_sources.txt",
                 "multiqc/multiqc_report.html",
                 "pipeline_info",
                 "pipeline_info/nf_core_datasync_software_mqc_versions.yml",
-                "shasum",
-                "shasum/Illumina_annotation.sha256",
-                "shasum/benchmark_bed.sha256",
-                "shasum/test_fastq.sha256"
+                "rclone",
+                "rclone/Illumina_annotation.combined.txt",
+                "rclone/Illumina_annotation.differ.txt",
+                "rclone/Illumina_annotation.error.txt",
+                "rclone/Illumina_annotation.match.txt",
+                "rclone/Illumina_annotation.missing_on_dst.txt",
+                "rclone/Illumina_annotation.missing_on_src.txt",
+                "rclone/benchmark_bed.combined.txt",
+                "rclone/benchmark_bed.differ.txt",
+                "rclone/benchmark_bed.error.txt",
+                "rclone/benchmark_bed.match.txt",
+                "rclone/benchmark_bed.missing_on_dst.txt",
+                "rclone/benchmark_bed.missing_on_src.txt",
+                "rclone/rclone-copy.log",
+                "rclone/test_fastq.combined.txt",
+                "rclone/test_fastq.differ.txt",
+                "rclone/test_fastq.error.txt",
+                "rclone/test_fastq.match.txt",
+                "rclone/test_fastq.missing_on_dst.txt",
+                "rclone/test_fastq.missing_on_src.txt"
             ],
             [
-                "Illumina_annotation.checksum_summary.csv:md5,da71db43566c677ddc32186e53d4f30e",
-                "Illumina_annotation.checksum_validation.csv:md5,9032cc5084168ca56d501269fc1021e8",
-                "benchmark_bed.checksum_summary.csv:md5,79bca6fd02a7888f38a493591289fbb5",
-                "benchmark_bed.checksum_validation.csv:md5,d1e7087446c6138dba9929099787c5c9",
-                "test_fastq.checksum_summary.csv:md5,79bca6fd02a7888f38a493591289fbb5",
-                "test_fastq.checksum_validation.csv:md5,9f72112e05dc478eee7d3d56a6364cd0",
-                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
+                "multiqc_rclone_check.txt:md5,b6ea8bb50b08e6a31b02de80f15cba83",
+                "multiqc_rclone_checksum_md5.txt:md5,b6ea8bb50b08e6a31b02de80f15cba83",
+                "multiqc_samplesheet.txt:md5,608c07d7a768f3d66b44f8daddcec95e"
             ]
         ],
-        "timestamp": "2026-06-29T21:12:58.023076335",
+        "timestamp": "2026-07-15T03:46:47.848763259",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.1"

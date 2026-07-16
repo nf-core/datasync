@@ -41,12 +41,6 @@
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
                     "fa_icon": "fas fa-file-signature"
                 },
-                "rclone_output_path": {
-                    "type": "string",
-                    "description": "Output path for Rclone data copying. Can be local path or remote storage path (s3://, gs://, etc.).",
-                    "help_text": "Specify the destination path where data from the samplesheet will be copied to using Rclone. Sample IDs will be appended to this path. Supports local paths and cloud storage paths.",
-                    "fa_icon": "fas fa-cloud-upload-alt"
-                },
                 "rclone_config": {
                     "type": "string",
                     "format": "file-path",
@@ -54,44 +48,12 @@
                     "description": "Path to the rclone config file used for cloud storage authentication.",
                     "help_text": "Provide an rclone config file to support cloud providers such as AWS S3 or Azure Blob Storage. This file is loaded by rclone when copying data.",
                     "fa_icon": "fas fa-file"
-                }
-            }
-        },
-        "reference_genome_options": {
-            "title": "Reference genome options",
-            "type": "object",
-            "fa_icon": "fas fa-dna",
-            "description": "Reference genome related files and options required for the workflow.",
-            "properties": {
-                "genome": {
-                    "type": "string",
-                    "description": "Name of iGenomes reference.",
-                    "fa_icon": "fas fa-book",
-                    "help_text": "If using a reference genome configured in the pipeline using iGenomes, use this parameter to give the ID for the reference. This is then used to build the full paths for all required reference genome files e.g. `--genome GRCh38`. \n\nSee the [nf-core website docs](https://nf-co.re/usage/reference_genomes) for more details."
                 },
-                "fasta": {
-                    "type": "string",
-                    "format": "file-path",
-                    "exists": true,
-                    "mimetype": "text/plain",
-                    "pattern": "^\\S+\\.fn?a(sta)?(\\.gz)?$",
-                    "description": "Path to FASTA genome file.",
-                    "help_text": "This parameter is *mandatory* if `--genome` is not specified. If you don't have a BWA index available this will be generated for you automatically. Combine with `--save_reference` to save BWA index for future runs.",
-                    "fa_icon": "far fa-file-code"
-                },
-                "igenomes_ignore": {
+                "rclone_dry_run": {
                     "type": "boolean",
-                    "description": "Do not load the iGenomes reference config.",
-                    "fa_icon": "fas fa-ban",
-                    "hidden": true,
-                    "help_text": "Do not load `igenomes.config` when running the pipeline. You may choose this option if you observe clashes between custom parameters and those supplied in `igenomes.config`."
-                },
-                "igenomes_base": {
-                    "type": "string",
-                    "description": "The base path to the igenomes reference files",
-                    "fa_icon": "fas fa-ban",
-                    "hidden": true,
-                    "default": "s3://ngi-igenomes/igenomes/"
+                    "description": "Perform a dry run of the rclone copy command.",
+                    "fa_icon": "fas fa-eye",
+                    "help_text": "If set, the pipeline will not actually copy any files to the destination. Instead, it will print out what would have been copied. This is useful for testing and debugging."
                 }
             }
         },
@@ -249,9 +211,6 @@
     "allOf": [
         {
             "$ref": "#/$defs/input_output_options"
-        },
-        {
-            "$ref": "#/$defs/reference_genome_options"
         },
         {
             "$ref": "#/$defs/institutional_config_options"

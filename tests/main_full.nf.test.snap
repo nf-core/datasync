@@ -2,25 +2,20 @@
     "-profile test_full": {
         "content": [
             {
-                "COMPARECHECKSUM": {
-                    "r-base": "4.2.1"
+                "RCLONE_CHECK": {
+                    "rclone": "1.74.3-DEV"
                 },
-                "MD5SUM": {
-                    "md5sum": 9.5
+                "RCLONE_CHECKSUM": {
+                    "rclone": "1.74.3-DEV"
                 },
-                "SHASUM": {
-                    "sha256sum": 9.5
+                "RCLONE_COPY": {
+                    "rclone": "1.65.0-DEV"
                 },
                 "Workflow": {
                     "nf-core/datasync": "v1.0dev"
                 }
             },
             [
-                "comparechecksum",
-                "comparechecksum/demultiplex.checksum_summary.csv",
-                "comparechecksum/demultiplex.checksum_validation.csv",
-                "md5sum",
-                "md5sum/demultiplex.md5",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -28,21 +23,33 @@
                 "multiqc/multiqc_data/multiqc.parquet",
                 "multiqc/multiqc_data/multiqc_citations.txt",
                 "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_rclone_check.txt",
+                "multiqc/multiqc_data/multiqc_rclone_checksum_md5.txt",
+                "multiqc/multiqc_data/multiqc_rclone_checksum_sha.txt",
+                "multiqc/multiqc_data/multiqc_samplesheet.txt",
                 "multiqc/multiqc_data/multiqc_software_versions.txt",
                 "multiqc/multiqc_data/multiqc_sources.txt",
                 "multiqc/multiqc_report.html",
                 "pipeline_info",
                 "pipeline_info/nf_core_datasync_software_mqc_versions.yml",
-                "shasum",
-                "shasum/demultiplex.sha256"
+                "rclone",
+                "rclone/demultiplex.combined.txt",
+                "rclone/demultiplex.differ.txt",
+                "rclone/demultiplex.error.txt",
+                "rclone/demultiplex.match.txt",
+                "rclone/demultiplex.missing_on_dst.txt",
+                "rclone/demultiplex.missing_on_src.txt",
+                "rclone/rclone-copy.log"
             ],
             [
-                "demultiplex.checksum_summary.csv:md5,5ab7359b25dcb4e6c6f5a7eb1687a2dc",
-                "demultiplex.checksum_validation.csv:md5,205760aabd99d02b7b61c250677f0b32",
-                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
+                "multiqc_rclone_check.txt:md5,034d1d633f567288c33f2c5e2b917962",
+                "multiqc_rclone_checksum_md5.txt:md5,dda2aa574568eb99f579fca2a1b19207",
+                "multiqc_rclone_checksum_sha.txt:md5,034d1d633f567288c33f2c5e2b917962",
+                "multiqc_samplesheet.txt:md5,29fbce9d1ffcdb97cb2ae32606e7145d"
             ]
         ],
-        "timestamp": "2026-06-29T21:15:25.735838624",
+        "timestamp": "2026-07-15T03:49:57.234615558",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.1"

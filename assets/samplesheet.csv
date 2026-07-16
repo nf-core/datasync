@@ -1,2 +1,2 @@
-sample,input,checksum_md5
-sample,path/to/file,path/to/file
+sample,input,output_path,checksum_md5
+sample,path/to/file,output_path,path/to/file

@@ -18,6 +18,11 @@
                 "pattern": "^\\S+$",
                 "errorMessage": "Input path must be provided and cannot contain spaces"
             },
+            "output_path": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Output path for rclone copy must be provided and cannot contain spaces"
+            },
             "checksum_md5": {
                 "type": "string",
                 "format": "file-path",
@@ -31,7 +36,7 @@
                 "errorMessage": "Checksum_sha cannot contain spaces"
             }
         },
-        "required": ["sample", "input"],
+        "required": ["sample", "input", "output_path"],
         "anyOf": [{ "required": ["checksum_md5"] }, { "required": ["checksum_sha"] }]
     }
 }
