@@ -9,6 +9,21 @@
                         "branch": "master",
                         "git_sha": "98403d15b0e50edae1f3fec5eae5e24982f1fade",
                         "installed_by": ["modules"]
+                    },
+                    "rclone/check": {
+                        "branch": "master",
+                        "git_sha": "0983b1ef5f0729946953d921100af925f86fafb0",
+                        "installed_by": ["modules"]
+                    },
+                    "rclone/checksum": {
+                        "branch": "master",
+                        "git_sha": "0983b1ef5f0729946953d921100af925f86fafb0",
+                        "installed_by": ["modules"]
+                    },
+                    "rclone/copy": {
+                        "branch": "master",
+                        "git_sha": "969013a2a91dc8152ca537bbd4dd4feaa15c13a7",
+                        "installed_by": ["modules"]
                     }
                 }
             },

@@ -4,13 +4,14 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
-include { RCLONE_COPY                 } from '../modules/local/rclone_copy/main'
-include { RCLONE_CHECK                } from '../modules/local/rclone/check/main'
-include { RCLONE_CHECKSUM             } from '../modules/local/rclone/checksum/main'
+include { RCLONE_COPY                 } from '../modules/nf-core/rclone/copy/main'
+include { RCLONE_CHECK                } from '../modules/nf-core/rclone/check/main'
+include { RCLONE_CHECKSUM             } from '../modules/nf-core/rclone/checksum/main'
 include { paramsSummaryMap            } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc        } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML      } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { methodsDescriptionText      } from '../subworkflows/local/utils_nfcore_datasync_pipeline'
+include { parseRcloneCheck            } from '../subworkflows/local/utils_nfcore_datasync_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,29 +37,23 @@ workflow DATASYNC {
     ch_samplesheet = ch_samplesheet.multiMap {
         meta, input_path, output_path, md5, sha ->
 
-            def source_string = input_path.toString()
+            def source = file(input_path)
 
-            def source_name = source_string
-                .replaceAll('/+$', '')
-                .tokenize('/')
-                .last()
+            def source_uri = source.toUriString()
 
-            def is_file = source_name.contains('.')
-            def rclone_destination = is_file
+            def rclone_destination = source.isFile()
                 ? output_path.toString().replaceAll('/+$', '')
-                : "${output_path.toString().replaceAll('/+$', '')}/${source_name}"
+                : "${output_path.toString().replaceAll('/+$', '')}/${source.name}"
+            def rclone_check = "${output_path.toString().replaceAll('/+$', '')}/${source.name}"
 
-            def rclone_check = "${output_path.toString().replaceAll('/+$', '')}/${source_name}"
-
-            input:    [ meta, input_path ]
-            rclone:   [ meta, input_path, rclone_destination ]
-            checksum: [ meta, md5, sha, file(input_path) ]
-            check :   [ meta, file(input_path), file(rclone_check) ]
+            rclone:   [ meta, source_uri, rclone_destination ]
+            checksum: [ meta, md5, sha, source ]
+            check :   [ meta, source, file(rclone_check) ]
     }
 
     // Group input md5sum/shasum with their respective generated checksum
     ch_checksum = ch_samplesheet.checksum
-         .flatMap { meta, md5, sha, input ->
+        .flatMap { meta, md5, sha, input ->
             def checksum_tuple = []
             if (md5) {
                 checksum_tuple << tuple(meta + [check_format: "md5"], md5, 'MD5', input)
@@ -76,25 +71,10 @@ workflow DATASYNC {
 
     ch_multiqc_files = ch_multiqc_files.mix(RCLONE_CHECKSUM.out.combined
         .flatMap { meta, check_file ->
-            check_file.readLines()
-                .findAll { it.trim() }
-                .collect { line ->
-                    def fields = line.split(/ /, 2)
-                    def status_map = [
-                    '=': 'Match',
-                    '-': 'Missing in source',
-                    '+': 'Missing in destination',
-                    '*': 'Mismatch',
-                    '!': 'Error'
-                ]
-
-                def status = status_map.get(fields[0], fields[0])
-
-                [ meta, "${fields[1]}\t${meta.id}\t${status}\n" ]
-                }
+            parseRcloneCheck(meta, check_file)
         }
         .collectFile(
-            seed: "File\tSample\tStatus\n",
+            seed: "Row\tStatus\tFile\tSample\tPriority\n",
             sort: false
         ) { meta, checksum ->
             return [ "${meta.id}_${meta.check_format}_rclone_checksum_mqc.tsv", checksum ]
@@ -123,25 +103,10 @@ workflow DATASYNC {
 
     ch_multiqc_files = ch_multiqc_files.mix(RCLONE_CHECK.out.combined
         .flatMap { meta, check_file ->
-            check_file.readLines()
-                .findAll { it.trim() }
-                .collect { line ->
-                    def fields = line.split(/ /, 2)
-                    def status_map = [
-                    '=': 'Match',
-                    '-': 'Missing in source',
-                    '+': 'Missing in destination',
-                    '*': 'Mismatch',
-                    '!': 'Error'
-                ]
-
-                def status = status_map.get(fields[0], fields[0])
-
-                [ meta, "${fields[1]}\t${meta.id}\t${status}\n" ]
-                }
+            parseRcloneCheck(meta, check_file)
         }
         .collectFile(
-            seed: "File\tSample\tStatus\n",
+            seed: "Row\tStatus\tFile\tSample\tPriority\n",
             sort: false
         ) { meta, check ->
             return [ "${meta.id}_rclone_check_mqc.tsv", check ]
@@ -190,6 +155,7 @@ workflow DATASYNC {
         : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
     def ch_methods_description = channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
     ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
+    ch_multiqc_files = ch_multiqc_files.mix(channel.value(file("${projectDir}/assets/multiqc_custom.css", checkIfExists: true)))
     MULTIQC(
         ch_multiqc_files.flatten().collect().map { files ->
             [

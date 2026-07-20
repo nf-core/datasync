@@ -1,0 +1,48 @@
+/* Keep the internal row identifier available to MultiQC without displaying it. */
+#rclone_checksum_md5-plot_table .rowheader,
+#rclone_checksum_sha-plot_table .rowheader,
+#rclone_check-plot_table .rowheader {
+  display: none;
+}
+
+/* Distinguish major sections from their result subsections. */
+#samplesheet,
+#source_path_checksum_validation,
+#file_transfer_integrity_check {
+  font-size: 2rem;
+}
+
+#rclone_checksum_md5,
+#rclone_checksum_sha,
+#rclone_check {
+  color: var(--bs-secondary-color, #6c757d);
+  font-size: 1.35rem;
+}
+
+/* Fit rclone result tables to the report width and wrap long file paths. */
+#rclone_checksum_md5-plot_table,
+#rclone_checksum_sha-plot_table,
+#rclone_check-plot_table {
+  table-layout: auto;
+  width: 100%;
+}
+
+#rclone_checksum_md5-plot_table .Status,
+#rclone_checksum_sha-plot_table .Status,
+#rclone_check-plot_table .Status {
+  white-space: nowrap;
+  width: 1%;
+}
+
+#rclone_checksum_md5-plot_table .File .val,
+#rclone_checksum_sha-plot_table .File .val,
+#rclone_check-plot_table .File .val {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+#rclone_checksum_md5-plot_table_container .mqc-table-responsive,
+#rclone_checksum_sha-plot_table_container .mqc-table-responsive,
+#rclone_check-plot_table_container .mqc-table-responsive {
+  overflow-x: hidden;
+}

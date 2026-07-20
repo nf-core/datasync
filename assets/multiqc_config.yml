@@ -14,9 +14,19 @@ export_plots: false
 
 disable_version_detection: true
 
+custom_content:
+  order:
+    - samplesheet
+    - rclone_checksum_md5
+    - rclone_checksum_sha
+    - rclone_check
+
 custom_data:
   samplesheet:
     section_name: "Input Samplesheet"
+    description: >
+      The input samplesheet lists each sample included in the run, the source path to copy, the destination path,
+      and the user-provided checksum files used to validate the source data.
     plot_type: "table"
     file_format: "csv"
     headers:
@@ -32,28 +42,157 @@ custom_data:
         title: Sha256 checksum file
 
   rclone_checksum_md5:
-    section_name: "RClone MD5 Checksum Report"
-    description: "MD5 input checksum validation"
+    parent_id: source_path_checksum_validation
+    parent_name: "Source checks"
+    parent_description: >
+      This section compares checksums calculated from files at each source path with the expected checksums supplied by the user
+      in the input samplesheet. This confirms source-file integrity before transfer.
+    section_name: "MD5 Checksum Validation"
+    description: "Comparison of the expected MD5 checksums provided in the samplesheet with the observed MD5 checksums of the file(s) found at the specified source path."
     plot_type: "table"
     file_format: "tsv"
+    headers:
+      Status:
+        title: Result
+        description: "= Match; - Missing in source; + Missing in destination; * Mismatch; ! Error"
+        cond_formatting_rules:
+          match:
+            - s_eq: "="
+            - s_eq: "Match"
+          missing_source:
+            - s_eq: "-"
+            - s_eq: "Missing in source"
+          missing_destination:
+            - s_eq: "+"
+            - s_eq: "Missing in destination"
+          mismatch:
+            - s_eq: "*"
+            - s_eq: "Mismatch"
+          error:
+            - s_eq: "!"
+            - s_eq: "Error"
+        cond_formatting_colours:
+          - match: "#5cb85c"
+          - missing_source: "#f0ad4e"
+          - missing_destination: "#5bc0de"
+          - mismatch: "#d9534f"
+          - error: "#8b0000"
+      File:
+        title: File
+        description: "File checked by rclone"
+      Sample:
+        title: Sample
+        description: "Sample name from the input samplesheet"
+      Priority:
+        title: Priority
+        hidden: true
     pconfig:
       no_violin: true
+      defaultsort:
+        - column: Priority
+          direction: asc
 
   rclone_checksum_sha:
-    section_name: "RClone SHA Checksum Report"
-    description: "SHA input checksum validation"
+    parent_id: source_path_checksum_validation
+    parent_name: "Source checks"
+    parent_description: >
+      This section compares checksums calculated from files at each source path with the expected checksums supplied by the user
+      in the input samplesheet. This confirms source-file integrity before transfer.
+    section_name: "SHA-256 Checksum Validation"
+    description: "Comparison of the expected SHA-256 checksums provided in the samplesheet with the observed SHA-256 checksums of the file(s) found at the specified source path."
     plot_type: "table"
     file_format: "tsv"
+    headers:
+      Status:
+        title: Result
+        description: "= Match; - Missing in source; + Missing in destination; * Mismatch; ! Error"
+        cond_formatting_rules:
+          match:
+            - s_eq: "="
+            - s_eq: "Match"
+          missing_source:
+            - s_eq: "-"
+            - s_eq: "Missing in source"
+          missing_destination:
+            - s_eq: "+"
+            - s_eq: "Missing in destination"
+          mismatch:
+            - s_eq: "*"
+            - s_eq: "Mismatch"
+          error:
+            - s_eq: "!"
+            - s_eq: "Error"
+        cond_formatting_colours:
+          - match: "#5cb85c"
+          - missing_source: "#f0ad4e"
+          - missing_destination: "#5bc0de"
+          - mismatch: "#d9534f"
+          - error: "#8b0000"
+      File:
+        title: File
+        description: "File checked by rclone"
+      Sample:
+        title: Sample
+        description: "Sample name from the input samplesheet"
+      Priority:
+        title: Priority
+        hidden: true
     pconfig:
       no_violin: true
+      defaultsort:
+        - column: Priority
+          direction: asc
 
   rclone_check:
-    section_name: "Final RClone Check Report"
-    description: "Validation of copied files"
+    parent_id: file_transfer_integrity_check
+    parent_name: "Post-Transfer Checks"
+    parent_description: >
+      This section compares corresponding files at the source and destination paths after the transfer step to confirm that the
+      destination content is complete and unchanged.
+    section_name: "Source-Destination Checksum Validation"
+    description: "Comparison of the checksums of corresponding file(s) in the source input path and the output destination to confirm data integrity following file transfer."
     plot_type: "table"
     file_format: "tsv"
+    headers:
+      Status:
+        title: Result
+        description: "= Match; - Missing in source; + Missing in destination; * Mismatch; ! Error"
+        cond_formatting_rules:
+          match:
+            - s_eq: "="
+            - s_eq: "Match"
+          missing_source:
+            - s_eq: "-"
+            - s_eq: "Missing in source"
+          missing_destination:
+            - s_eq: "+"
+            - s_eq: "Missing in destination"
+          mismatch:
+            - s_eq: "*"
+            - s_eq: "Mismatch"
+          error:
+            - s_eq: "!"
+            - s_eq: "Error"
+        cond_formatting_colours:
+          - match: "#5cb85c"
+          - missing_source: "#f0ad4e"
+          - missing_destination: "#5bc0de"
+          - mismatch: "#d9534f"
+          - error: "#8b0000"
+      File:
+        title: File
+        description: "File checked by rclone"
+      Sample:
+        title: Sample
+        description: "Sample name from the input samplesheet"
+      Priority:
+        title: Priority
+        hidden: true
     pconfig:
       no_violin: true
+      defaultsort:
+        - column: Priority
+          direction: asc
 
 sp:
   samplesheet:

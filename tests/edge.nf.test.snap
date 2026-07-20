@@ -1,0 +1,99 @@
+{
+    "-profile test edge cases": {
+        "content": [
+            {
+                "RCLONE_CHECK": {
+                    "rclone": "1.74.3-DEV"
+                },
+                "RCLONE_CHECKSUM": {
+                    "rclone": "1.74.3-DEV"
+                },
+                "RCLONE_COPY": {
+                    "rclone": "1.65.0-DEV"
+                },
+                "Workflow": {
+                    "nf-core/datasync": "v1.0dev"
+                }
+            },
+            [
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_rclone_check.txt",
+                "multiqc/multiqc_data/multiqc_rclone_checksum_md5.txt",
+                "multiqc/multiqc_data/multiqc_rclone_checksum_sha.txt",
+                "multiqc/multiqc_data/multiqc_samplesheet.txt",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_datasync_software_mqc_versions.yml",
+                "rclone",
+                "rclone/check",
+                "rclone/check/Illumina_annotation_incorrect",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect.combined.txt",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect.differ.txt",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect.error.txt",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect.match.txt",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect.missing_on_dst.txt",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect.missing_on_src.txt",
+                "rclone/check/Illumina_annotation_missing",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing.combined.txt",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing.differ.txt",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing.error.txt",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing.match.txt",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing.missing_on_dst.txt",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing.missing_on_src.txt",
+                "rclone/check/Illumina_annotation_sha_only",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only.combined.txt",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only.differ.txt",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only.error.txt",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only.match.txt",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only.missing_on_dst.txt",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only.missing_on_src.txt",
+                "rclone/checksum",
+                "rclone/checksum/Illumina_annotation_incorrect",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect.combined.txt",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect.differ.txt",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect.error.txt",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect.match.txt",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect.missing_on_dst.txt",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect.missing_on_src.txt",
+                "rclone/checksum/Illumina_annotation_missing",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing.combined.txt",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing.differ.txt",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing.error.txt",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing.match.txt",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing.missing_on_dst.txt",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing.missing_on_src.txt",
+                "rclone/checksum/Illumina_annotation_sha_only",
+                "rclone/checksum/Illumina_annotation_sha_only/Illumina_annotation_sha_only.combined.txt",
+                "rclone/checksum/Illumina_annotation_sha_only/Illumina_annotation_sha_only.differ.txt",
+                "rclone/checksum/Illumina_annotation_sha_only/Illumina_annotation_sha_only.error.txt",
+                "rclone/checksum/Illumina_annotation_sha_only/Illumina_annotation_sha_only.match.txt",
+                "rclone/checksum/Illumina_annotation_sha_only/Illumina_annotation_sha_only.missing_on_dst.txt",
+                "rclone/checksum/Illumina_annotation_sha_only/Illumina_annotation_sha_only.missing_on_src.txt",
+                "rclone/copy",
+                "rclone/copy/Illumina_annotation_incorrect-rclone-copy.log",
+                "rclone/copy/Illumina_annotation_missing-rclone-copy.log",
+                "rclone/copy/Illumina_annotation_sha_only-rclone-copy.log"
+            ],
+            [
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
+                "multiqc_rclone_check.txt:md5,df42d80150a8a1f2da93c5eed053dc3f",
+                "multiqc_rclone_checksum_md5.txt:md5,679b4cda086bfacf50fe3ec5b22dd386",
+                "multiqc_rclone_checksum_sha.txt:md5,9ba162249102c1b0af4464411b3a7eb5",
+                "multiqc_samplesheet.txt:md5,bbfc817ff43c49cde14a2b33f46b5ae5"
+            ]
+        ],
+        "timestamp": "2026-07-20T14:40:38.905083297",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    }
+}
