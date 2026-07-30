@@ -54,6 +54,12 @@
                     "description": "Perform a dry run of the rclone copy command.",
                     "fa_icon": "fas fa-eye",
                     "help_text": "If set, the pipeline will not actually copy any files to the destination. Instead, it will print out what would have been copied. This is useful for testing and debugging."
+                },
+                "copy_matching_only": {
+                    "type": "boolean",
+                    "description": "Only copy files that matched their provided input checksums.",
+                    "fa_icon": "fas fa-eye",
+                    "help_text": "If set, the pipeline will only copy files that were correctly validated and will skip any file that did not match their input checksum."
                 }
             }
         },

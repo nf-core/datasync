@@ -3,15 +3,15 @@
     IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
-include { RCLONE_COPY                 } from '../modules/nf-core/rclone/copy/main'
-include { RCLONE_CHECK                } from '../modules/nf-core/rclone/check/main'
-include { RCLONE_CHECKSUM             } from '../modules/nf-core/rclone/checksum/main'
-include { paramsSummaryMap            } from 'plugin/nf-schema'
-include { paramsSummaryMultiqc        } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { softwareVersionsToYAML      } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText      } from '../subworkflows/local/utils_nfcore_datasync_pipeline'
-include { parseRcloneCheck            } from '../subworkflows/local/utils_nfcore_datasync_pipeline'
+include { MULTIQC                                  } from '../modules/nf-core/multiqc/main'
+include { RCLONE_COPY                              } from '../modules/nf-core/rclone/copy/main'
+include { RCLONE_CHECK                             } from '../modules/nf-core/rclone/check/main'
+include { RCLONE_CHECKSUM                          } from '../modules/nf-core/rclone/checksum/main'
+include { paramsSummaryMap                         } from 'plugin/nf-schema'
+include { paramsSummaryMultiqc                     } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML                   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { methodsDescriptionText                   } from '../subworkflows/local/utils_nfcore_datasync_pipeline'
+include { parseRcloneCheck                         } from '../subworkflows/local/utils_nfcore_datasync_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -33,6 +33,7 @@ workflow DATASYNC {
 
     ch_versions = channel.empty()
     ch_multiqc_files = channel.empty()
+    ch_rclone_config = rclone_config ? file(rclone_config, checkIfExists: true) : []
 
     ch_samplesheet = ch_samplesheet.multiMap {
         meta, input_path, output_path, md5, sha ->
@@ -44,11 +45,13 @@ workflow DATASYNC {
             def rclone_destination = source.isFile()
                 ? output_path.toString().replaceAll('/+$', '')
                 : "${output_path.toString().replaceAll('/+$', '')}/${source.name}"
-            def rclone_check = "${output_path.toString().replaceAll('/+$', '')}/${source.name}"
+
+            def rclone_check = source.isFile()
+                ? input_path.replaceFirst('/[^/]+$', '')
+                : input_path.toString().replaceAll('/+$', '')
 
             rclone:   [ meta, source_uri, rclone_destination ]
-            checksum: [ meta, md5, sha, source ]
-            check :   [ meta, source, file(rclone_check) ]
+            checksum: [ meta, md5, sha, rclone_check ]
     }
 
     // Group input md5sum/shasum with their respective generated checksum
@@ -66,7 +69,8 @@ workflow DATASYNC {
         }
 
     RCLONE_CHECKSUM(
-        ch_checksum
+        ch_checksum,
+        ch_rclone_config
     )
 
     ch_multiqc_files = ch_multiqc_files.mix(RCLONE_CHECKSUM.out.combined
@@ -84,21 +88,52 @@ workflow DATASYNC {
     //
     // MODULE: Rclone data copying
     //
+    if(params.copy_matching_only) {
+        // Compute expected group size per meta.id from the input
+        ch_with_size = ch_checksum
+            .map { meta, checksum, hash, source -> [ meta.subMap(meta.keySet() - 'check_format'), 1 ] }
+            .groupTuple()
+            .map { meta, ones -> tuple(meta, ones.size()) }
+
+        files_to_copy = RCLONE_CHECKSUM.out.match.map {
+                meta, match -> [ meta.subMap(meta.keySet() - 'check_format'), match ]
+            }
+            .combine(ch_with_size, by: 0)
+            .map { meta, match, size -> tuple(groupKey(meta, size), match) }
+            .groupTuple()
+            .map{ meta, files ->
+                def common = files
+                    .collect { it.readLines() }
+                    .inject { a, b -> a.intersect(b) }
+
+                def copy_files = file("${workDir}/${meta.id}_files_to_copy.txt")
+                copy_files.text = common.join('\n') + '\n'
+
+                tuple(meta, copy_files)
+            }
+
+        ch_rclone_copy = ch_samplesheet.rclone
+            .join(files_to_copy)
+    } else {
+        ch_rclone_copy = ch_samplesheet.rclone.map { meta, source, destination -> [ meta, source, destination, [] ] }
+    }
+
     RCLONE_COPY(
-        ch_samplesheet.rclone,
-        rclone_config ? file(rclone_config, checkIfExists: true) : []
+        ch_rclone_copy,
+        ch_rclone_config,
     )
+
+    // Wait for file copy to finish before running RCLONE_CHECK
+    ch_rclone_check = ch_samplesheet.rclone
+        .join(RCLONE_COPY.out.log)
+        .map { meta, input, output, log -> [ meta, input, output ] }
 
     //
     // File transfer validation
     //
-    // Wait for file copy to finish before running RCLONE_CHECK
-    ch_rclone_check = ch_samplesheet.check
-        .join(RCLONE_COPY.out.log)
-        .map { meta, input, output, log -> [ meta, input, output ]}
-
     RCLONE_CHECK(
-        ch_rclone_check
+        ch_rclone_check,
+        ch_rclone_config
     )
 
     ch_multiqc_files = ch_multiqc_files.mix(RCLONE_CHECK.out.combined

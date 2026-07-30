@@ -2,8 +2,7 @@ nf_core_version: 4.0.2
 repository_type: pipeline
 template:
   author: Alexander Peltzer
-  description: A simple sysops pipeline that can be used to synchronize, integrity
-    check and permanently archive data.
+  description: A simple sysops pipeline that can be used to synchronize, integrity check and permanently archive data.
   force: false
   is_nfcore: true
   name: datasync
@@ -12,3 +11,8 @@ template:
   version: 1.0dev
 lint:
   multiqc_config: false
+  files_exist:
+    - .github/workflows/linting_comment.yml
+  files_unchanged:
+    - .github/workflows/branch.yml
+    - .github/workflows/linting.yml

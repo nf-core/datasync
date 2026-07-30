@@ -25,7 +25,6 @@
                 "multiqc/multiqc_data/multiqc_data.json",
                 "multiqc/multiqc_data/multiqc_rclone_check.txt",
                 "multiqc/multiqc_data/multiqc_rclone_checksum_md5.txt",
-                "multiqc/multiqc_data/multiqc_rclone_checksum_sha.txt",
                 "multiqc/multiqc_data/multiqc_samplesheet.txt",
                 "multiqc/multiqc_data/multiqc_software_versions.txt",
                 "multiqc/multiqc_data/multiqc_sources.txt",
@@ -36,34 +35,26 @@
                 "rclone/check",
                 "rclone/check/demultiplex",
                 "rclone/check/demultiplex/demultiplex.combined.txt",
-                "rclone/check/demultiplex/demultiplex.differ.txt",
-                "rclone/check/demultiplex/demultiplex.error.txt",
                 "rclone/check/demultiplex/demultiplex.match.txt",
-                "rclone/check/demultiplex/demultiplex.missing_on_dst.txt",
-                "rclone/check/demultiplex/demultiplex.missing_on_src.txt",
                 "rclone/checksum",
                 "rclone/checksum/demultiplex",
                 "rclone/checksum/demultiplex/demultiplex.combined.txt",
-                "rclone/checksum/demultiplex/demultiplex.differ.txt",
-                "rclone/checksum/demultiplex/demultiplex.error.txt",
+                "rclone/checksum/demultiplex/demultiplex.exit_code.txt",
                 "rclone/checksum/demultiplex/demultiplex.match.txt",
-                "rclone/checksum/demultiplex/demultiplex.missing_on_dst.txt",
-                "rclone/checksum/demultiplex/demultiplex.missing_on_src.txt",
                 "rclone/copy",
                 "rclone/copy/demultiplex-rclone-copy.log"
             ],
             [
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
-                "multiqc_rclone_check.txt:md5,204410f4dab8ab5db201f4833baa2f81",
-                "multiqc_rclone_checksum_md5.txt:md5,f59d50960061aee8afac0d9389b90a2e",
-                "multiqc_rclone_checksum_sha.txt:md5,204410f4dab8ab5db201f4833baa2f81",
+                "multiqc_rclone_check.txt:md5,03a73f087a286ec6580aada2a5db2e7c",
+                "multiqc_rclone_checksum_md5.txt:md5,d7c7dd71a9ff75955dd0e508d1ad9968",
                 "multiqc_samplesheet.txt:md5,00788a52d1a014c12ac4ed554b0b44ca"
             ]
         ],
-        "timestamp": "2026-07-17T19:31:26.493917757",
+        "timestamp": "2026-07-22T22:01:43.699965019",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.04.1"
         }
     }
 }

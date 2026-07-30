@@ -21,52 +21,65 @@
 
 ## Introduction
 
-[WIP] WORK IN PROGRESS AND NOT YET STABLE - DO NOT USE FOR PRODUCTIVE SETTINGS YET
+> [!WARNING]
+> nf-core/datasync is under active development and is not yet recommended for production data transfers. Validate its behaviour with representative data before relying on it.
 
-**nf-core/datasync** is a system operation pipeline that provides several workflows for handling system operation / automation tasks that are commonly helpful for various tasks in large data processing / analysis facilities. This includes:
+**nf-core/datasync** is a Nextflow pipeline for copying files and directories between storage locations and documenting their integrity. For every row in an input samplesheet, the pipeline:
 
-- Data Synchronization & Checksum generation
-  - Configurable: Can provide YAML file which files to include or exclude from sync
-  - Checksum backend: Can configure which backend to use for checksum generation (e.g. sha256sum, md5, ...)
-  - Configurable whether to include (sub-) folders in the sync or not (search for checkpoint files, e.g. has to have DEMUX_DONE that signals a demultiplexing run was finished & successfully copied)
-- Data Integrity validation
-  - Provided with a directory to check, can validate that file(s) found are matching checksums from Synchronization subworkflow
-- Data Archival & Deletion
-  - Can check source and target location for existence of file(s) and decide based on user configurable rules whether files can be considered archived
-    - Timestamp older than X days
-    - Checksums match Integrity validation report
-    - Create empty files to make it obvious that archival was performed
-    - Optionally: Delete files or create list of files to be deleted for manual deletion process
+1. validates the source against a supplied MD5 and/or SHA-256 checksum manifest using [`rclone checksum`](https://rclone.org/commands/rclone_checksum/);
+2. copies the source to the requested destination with [`rclone copy`](https://rclone.org/);
+3. compares the copied data with the source using [`rclone check`](https://rclone.org/commands/rclone_check/); and
+4. produces detailed `rclone` status files and a consolidated MultiQC report.
 
-The pipeline can be configured by users to execute any of the aforementioned subworkflows and then produces a report using MultiQC custom content that also serves as a report of _what_ was done by the pipeline for documentation purposes.
+Sources and destinations may be local paths, HTTP(S) URLs, or rclone-supported remote storage such as Amazon S3, S3-compatible object storage, or Azure Blob Storage.
 
-## Usage
+The current tested use case for this pipeline is transfer between S3 buckets.
+
+Pass an `rclone` configuration with `--rclone_config` whenever a source or destination needs a configured remote, endpoint, or credentials. A single configuration file can contain separate named remotes for multiple providers; for non-S3 layouts, design and validate the provider-specific configuration using the upstream [rclone documentation](https://rclone.org/docs/).
+
+![nf-core/datasync metro map](docs/images/datasync-metromap.png)
+
+## Quick start
 
 > [!NOTE]
-> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/get_started/environment_setup/overview) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/get_started/run-your-first-pipeline) with `-profile test` before running the workflow on actual data.
+> If you are new to Nextflow and nf-core, see the [nf-core environment setup guide](https://nf-co.re/docs/get_started/environment_setup/overview). Nextflow 25.10.4 or later is required.
 
-Now, you can run the pipeline using:
+To explore the pipeline outputs before preparing your own data, run the bundled `test` profile with a container profile:
 
 ```bash
 nextflow run nf-core/datasync \
-   -profile <docker/singularity/.../institute> \
-   --input samplesheet.csv \
-   --outdir <OUTDIR>
-   --sync
-   --sync_backend 'sha256'
-   --sync_done true #Creates SYNC_DONE file when done in each folder
+    -profile test,docker \
+    --outdir results
 ```
 
-> [!WARNING]
-> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/running/run-pipelines#using-parameter-files).
+The `test` profile supplies a small samplesheet and `rclone` configuration automatically. It also enables `--rclone_dry_run`, so no files are actually transferred. This makes it useful for exploring the `rclone/` output folders and `multiqc/multiqc_report.html`; remember that post-copy comparison reports describe whatever is already present at the destination because the dry run does not write transfer data.
 
-For more details and further functionality, please refer to the [usage documentation](https://nf-co.re/datasync/usage) and the [parameter documentation](https://nf-co.re/datasync/parameters).
+To run the pipeline on your own data, create a samplesheet containing one transfer per row:
+
+```csv
+sample,input,output_path,checksum_md5,checksum_sha
+run_001,/data/run_001,s3://archive/runs,/data/manifests/run_001_md5.tsv
+reference,https://example.org/reference.fa,/data/references,,/data/manifests/reference_sha256.tsv
+```
+
+Then launch the pipeline using:
+
+```bash
+nextflow run nf-core/datasync \
+    -r <VERSION> \
+    -profile docker \
+    --input samplesheet.csv \
+    --outdir results \
+    --rclone_config /path/to/rclone.conf
+```
+
+`--rclone_config` is optional only when every source and destination is accessible without a configured rclone remote. See the [`rclone` configuration section](docs/usage.md#configuring-rclone-remotes) for the tested S3-to-S3 use case and guidance on adapting rclone configuration files for other providers. To preview copy operations without transferring data, add `--rclone_dry_run`; note that subsequent comparison reports will then describe the unchanged destination.
+
+See the [usage documentation](docs/usage.md) for samplesheet rules, destination semantics, remote configuration, and reproducible execution. The complete generated parameter reference is available on the [nf-core pipeline page](https://nf-co.re/datasync/parameters).
 
 ## Pipeline output
 
-To see the results of an example test run with a full size dataset refer to the [results](https://nf-co.re/datasync/results) tab on the nf-core website pipeline page.
-For more details about the output files and reports, please refer to the
-[output documentation](https://nf-co.re/datasync/output).
+Results are written below `--outdir`. See the [output documentation](docs/output.md) for file names and status-code interpretation.
 
 ## Credits
 
