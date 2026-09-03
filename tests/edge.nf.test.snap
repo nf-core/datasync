@@ -9,13 +9,15 @@
                     "rclone": "1.74.3-DEV"
                 },
                 "RCLONE_COPY": {
-                    "rclone": "1.65.0-DEV"
+                    "rclone": "1.74.3-DEV"
                 },
                 "Workflow": {
                     "nf-core/datasync": "v1.0.0"
                 }
             },
             [
+                "create",
+                "create/files_to_copy.txt",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -37,10 +39,16 @@
                 "rclone/check",
                 "rclone/check/Illumina_annotation_incorrect",
                 "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect_check.combined.txt",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect_check.exit_code.txt",
                 "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect_check.match.txt",
                 "rclone/check/Illumina_annotation_missing",
                 "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing_check.combined.txt",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing_check.exit_code.txt",
                 "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing_check.match.txt",
+                "rclone/check/Illumina_annotation_sha_only",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only_check.combined.txt",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only_check.exit_code.txt",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only_check.match.txt",
                 "rclone/checksum",
                 "rclone/checksum/Illumina_annotation_incorrect",
                 "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect_checksum_MD5.combined.txt",
@@ -62,16 +70,22 @@
                 "rclone/copy/Illumina_annotation_missing-rclone-copy.log"
             ],
             [
+                "files_to_copy.txt:md5,df576e44dfe5a24521997ef162cba157",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
-                "multiqc_rclone_check.txt:md5,4b2a6990836593f69e8e81a82c3daf42",
+                "multiqc_rclone_check.txt:md5,c8f13c10aa4f0e4b356c5c08a9ae7ee9",
                 "multiqc_rclone_checksum_md5.txt:md5,40ef26b67a9f5c4943a12d412f4e632f",
                 "multiqc_rclone_checksum_sha.txt:md5,8d38305a4ad03c7ea18aa9827d34a396",
-                "multiqc_rclone_exit_codes.txt:md5,e72c745debdc6ed04aa9b13b068d897c",
+                "multiqc_rclone_exit_codes.txt:md5,3dd8d4741882ff589545c2f2fcc99520",
                 "multiqc_samplesheet.txt:md5,bbfc817ff43c49cde14a2b33f46b5ae5",
                 "Illumina_annotation_incorrect_check.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_incorrect_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
                 "Illumina_annotation_incorrect_check.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
                 "Illumina_annotation_missing_check.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_missing_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
                 "Illumina_annotation_missing_check.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
+                "Illumina_annotation_sha_only_check.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_sha_only_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
+                "Illumina_annotation_sha_only_check.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
                 "Illumina_annotation_incorrect_checksum_MD5.combined.txt:md5,34ecbd1fa8f707c75898ee45cadf45d6",
                 "Illumina_annotation_incorrect_checksum_MD5.differ.txt:md5,e5fdf362a1dc4ac877f92ee769e47fd8",
                 "Illumina_annotation_incorrect_checksum_MD5.exit_code.txt:md5,b026324c6904b2a9cb4b88d6d61c81d1",
@@ -86,10 +100,10 @@
                 "Illumina_annotation_sha_only_checksum_SHA256.exit_code.txt:md5,b026324c6904b2a9cb4b88d6d61c81d1"
             ]
         ],
-        "timestamp": "2026-08-18T14:13:27.670540243",
+        "timestamp": "2026-09-02T18:26:55.720186858",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.04.1"
         }
     },
     "-profile test edge cases": {
@@ -102,7 +116,7 @@
                     "rclone": "1.74.3-DEV"
                 },
                 "RCLONE_COPY": {
-                    "rclone": "1.65.0-DEV"
+                    "rclone": "1.74.3-DEV"
                 },
                 "Workflow": {
                     "nf-core/datasync": "v1.0.0"
@@ -130,12 +144,15 @@
                 "rclone/check",
                 "rclone/check/Illumina_annotation_incorrect",
                 "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect_check.combined.txt",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect_check.exit_code.txt",
                 "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect_check.match.txt",
                 "rclone/check/Illumina_annotation_missing",
                 "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing_check.combined.txt",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing_check.exit_code.txt",
                 "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing_check.match.txt",
                 "rclone/check/Illumina_annotation_sha_only",
                 "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only_check.combined.txt",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only_check.exit_code.txt",
                 "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only_check.match.txt",
                 "rclone/checksum",
                 "rclone/checksum/Illumina_annotation_incorrect",
@@ -163,13 +180,16 @@
                 "multiqc_rclone_check.txt:md5,c8f13c10aa4f0e4b356c5c08a9ae7ee9",
                 "multiqc_rclone_checksum_md5.txt:md5,40ef26b67a9f5c4943a12d412f4e632f",
                 "multiqc_rclone_checksum_sha.txt:md5,8d38305a4ad03c7ea18aa9827d34a396",
-                "multiqc_rclone_exit_codes.txt:md5,e72c745debdc6ed04aa9b13b068d897c",
+                "multiqc_rclone_exit_codes.txt:md5,3dd8d4741882ff589545c2f2fcc99520",
                 "multiqc_samplesheet.txt:md5,bbfc817ff43c49cde14a2b33f46b5ae5",
                 "Illumina_annotation_incorrect_check.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_incorrect_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
                 "Illumina_annotation_incorrect_check.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
                 "Illumina_annotation_missing_check.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_missing_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
                 "Illumina_annotation_missing_check.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
                 "Illumina_annotation_sha_only_check.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_sha_only_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
                 "Illumina_annotation_sha_only_check.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
                 "Illumina_annotation_incorrect_checksum_MD5.combined.txt:md5,34ecbd1fa8f707c75898ee45cadf45d6",
                 "Illumina_annotation_incorrect_checksum_MD5.differ.txt:md5,e5fdf362a1dc4ac877f92ee769e47fd8",
@@ -185,10 +205,10 @@
                 "Illumina_annotation_sha_only_checksum_SHA256.exit_code.txt:md5,b026324c6904b2a9cb4b88d6d61c81d1"
             ]
         ],
-        "timestamp": "2026-08-18T14:12:50.690727768",
+        "timestamp": "2026-09-02T18:26:27.114460768",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.04.1"
         }
     }
 }

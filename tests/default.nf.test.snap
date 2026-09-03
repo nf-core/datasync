@@ -9,7 +9,7 @@
                     "rclone": "1.74.3-DEV"
                 },
                 "RCLONE_COPY": {
-                    "rclone": "1.65.0-DEV"
+                    "rclone": "1.74.3-DEV"
                 },
                 "Workflow": {
                     "nf-core/datasync": "v1.0.0"
@@ -36,13 +36,16 @@
                 "rclone/check",
                 "rclone/check/Illumina_annotation",
                 "rclone/check/Illumina_annotation/Illumina_annotation_check.combined.txt",
+                "rclone/check/Illumina_annotation/Illumina_annotation_check.exit_code.txt",
                 "rclone/check/Illumina_annotation/Illumina_annotation_check.match.txt",
                 "rclone/check/benchmark_bed",
                 "rclone/check/benchmark_bed/benchmark_bed_check.combined.txt",
+                "rclone/check/benchmark_bed/benchmark_bed_check.exit_code.txt",
                 "rclone/check/benchmark_bed/benchmark_bed_check.match.txt",
                 "rclone/checksum",
                 "rclone/checksum/Illumina_annotation",
                 "rclone/checksum/Illumina_annotation/Illumina_annotation_checksum_MD5.combined.txt",
+                "rclone/checksum/Illumina_annotation/Illumina_annotation_checksum_MD5.exit_code.txt",
                 "rclone/checksum/Illumina_annotation/Illumina_annotation_checksum_MD5.match.txt",
                 "rclone/checksum/benchmark_bed",
                 "rclone/checksum/benchmark_bed/benchmark_bed_checksum_MD5.combined.txt",
@@ -57,13 +60,16 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
                 "multiqc_rclone_check.txt:md5,f9dc48d3c4d35cd7297b0a16227c3bcd",
                 "multiqc_rclone_checksum_md5.txt:md5,c7127de966d1be295ef6697dba648c79",
-                "multiqc_rclone_exit_codes.txt:md5,f50e1acf7abee71274f0f92508576cb1",
+                "multiqc_rclone_exit_codes.txt:md5,d970d9335584ff1e7349036e62f5e8d4",
                 "multiqc_samplesheet.txt:md5,373d903a41ab29bd26db35a3041626e4",
                 "Illumina_annotation_check.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
                 "Illumina_annotation_check.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
                 "benchmark_bed_check.combined.txt:md5,dcd2c539696adba720986251dcd1aaef",
+                "benchmark_bed_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
                 "benchmark_bed_check.match.txt:md5,12608858576bec12c65ff338a99803c3",
                 "Illumina_annotation_checksum_MD5.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_checksum_MD5.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
                 "Illumina_annotation_checksum_MD5.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
                 "benchmark_bed_checksum_MD5.combined.txt:md5,592b2b2af44551686a8057f585309413",
                 "benchmark_bed_checksum_MD5.exit_code.txt:md5,b026324c6904b2a9cb4b88d6d61c81d1",
@@ -71,10 +77,10 @@
                 "benchmark_bed_checksum_MD5.missing_on_src.txt:md5,7bf2def3eed9eff615a0f29ae1652254"
             ]
         ],
-        "timestamp": "2026-08-18T14:12:12.191208475",
+        "timestamp": "2026-09-02T18:25:59.629051707",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.04.1"
         }
     }
 }

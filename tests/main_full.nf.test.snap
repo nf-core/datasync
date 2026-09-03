@@ -9,7 +9,7 @@
                     "rclone": "1.74.3-DEV"
                 },
                 "RCLONE_COPY": {
-                    "rclone": "1.65.0-DEV"
+                    "rclone": "1.74.3-DEV"
                 },
                 "Workflow": {
                     "nf-core/datasync": "v1.0.0"
@@ -37,6 +37,7 @@
                 "rclone/check",
                 "rclone/check/demultiplex",
                 "rclone/check/demultiplex/demultiplex_check.combined.txt",
+                "rclone/check/demultiplex/demultiplex_check.exit_code.txt",
                 "rclone/check/demultiplex/demultiplex_check.match.txt",
                 "rclone/checksum",
                 "rclone/checksum/demultiplex",
@@ -45,6 +46,7 @@
                 "rclone/checksum/demultiplex/demultiplex_checksum_MD5.match.txt",
                 "rclone/checksum/demultiplex/demultiplex_checksum_MD5.missing_on_src.txt",
                 "rclone/checksum/demultiplex/demultiplex_checksum_SHA256.combined.txt",
+                "rclone/checksum/demultiplex/demultiplex_checksum_SHA256.exit_code.txt",
                 "rclone/checksum/demultiplex/demultiplex_checksum_SHA256.match.txt",
                 "rclone/copy",
                 "rclone/copy/demultiplex-rclone-copy.log"
@@ -54,22 +56,24 @@
                 "multiqc_rclone_check.txt:md5,03a73f087a286ec6580aada2a5db2e7c",
                 "multiqc_rclone_checksum_md5.txt:md5,a68bd0275b5b6cb62ec966b68121b0e1",
                 "multiqc_rclone_checksum_sha.txt:md5,03a73f087a286ec6580aada2a5db2e7c",
-                "multiqc_rclone_exit_codes.txt:md5,9bf4a8961b2d370bb06a09ccf65e0f7e",
+                "multiqc_rclone_exit_codes.txt:md5,2bc7209227358c54fa71dc3adb38d159",
                 "multiqc_samplesheet.txt:md5,00788a52d1a014c12ac4ed554b0b44ca",
                 "demultiplex_check.combined.txt:md5,3ae32d27ed8a8e14c3b9b954e23c3839",
+                "demultiplex_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
                 "demultiplex_check.match.txt:md5,902e4715d579b7f43a5463a220df8db0",
                 "demultiplex_checksum_MD5.combined.txt:md5,9250a5e20244b4beb397eab1a2003c3a",
                 "demultiplex_checksum_MD5.exit_code.txt:md5,b026324c6904b2a9cb4b88d6d61c81d1",
                 "demultiplex_checksum_MD5.match.txt:md5,644b95db936b45b931143faefb15be7f",
                 "demultiplex_checksum_MD5.missing_on_src.txt:md5,b9f072c9e776951c6759590a8259f765",
                 "demultiplex_checksum_SHA256.combined.txt:md5,3ae32d27ed8a8e14c3b9b954e23c3839",
+                "demultiplex_checksum_SHA256.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
                 "demultiplex_checksum_SHA256.match.txt:md5,902e4715d579b7f43a5463a220df8db0"
             ]
         ],
-        "timestamp": "2026-08-18T14:16:39.079934709",
+        "timestamp": "2026-09-02T18:28:53.331210181",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.04.1"
         }
     }
 }

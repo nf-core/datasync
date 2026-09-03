@@ -170,6 +170,28 @@ workflow PIPELINE_COMPLETION {
 // Check and validate pipeline parameters
 //
 def validateInputParameters() {
+
+    def samples = samplesheetToList(params.input, "${projectDir}/assets/schema_input.json")
+
+    def requires_download = samples.any { meta, input_path, output_path, md5, sha ->
+        sha && (input_path ==~ /^[a-zA-Z][a-zA-Z0-9+.-]*:.*/)
+    }
+
+    if (requires_download && params.download) {
+        log.warn(
+            "The `--download` parameter is enabled. `RCLONE_CHECKSUM` will download remote files. " +
+            "Make sure this is what you want, as it may incur substantial cloud costs!"
+        )
+    }
+
+    if (requires_download && !params.download) {
+        log.error(
+            "A SHA checksum file was provided for one or more remote files, but `--download` " +
+            "is not enabled. `RCLONE_CHECKSUM` cannot verify SHA256 checksums for remote files " +
+            "without downloading them. Enable `--download` to proceed."
+        )
+        exit 1
+    }
 }
 
 //
@@ -241,7 +263,7 @@ def toolCitationText() {
 
 def toolBibliographyText() {
     def reference_text = [
-            "<li>Craig-Wood, N. (2023). Rclone: Rsync for cloud storage (Vers. 1.65.0). Computer software. https://rclone.org</li>",
+            "<li>Craig-Wood, N. (2023). Rclone: Rsync for cloud storage (Vers. 1.74.3). Computer software. https://rclone.org</li>",
             "<li>Ewels, P., Magnusson, M., Lundin, S., & Käller, M. (2016). MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics, 32(19), 3047–3048. doi: /10.1093/bioinformatics/btw354</li>"
         ].join(' ').trim()
 

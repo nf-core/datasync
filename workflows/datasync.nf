@@ -7,6 +7,7 @@ include { MULTIQC                                  } from '../modules/nf-core/mu
 include { RCLONE_COPY                              } from '../modules/nf-core/rclone/copy/main'
 include { RCLONE_CHECK                             } from '../modules/nf-core/rclone/check/main'
 include { RCLONE_CHECKSUM                          } from '../modules/nf-core/rclone/checksum/main'
+include { CREATE_FILTER_LIST                       } from '../modules/local/create_filter_list/main'
 include { paramsSummaryMap                         } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc                     } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML                   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -39,27 +40,20 @@ workflow DATASYNC {
     ch_samplesheet = ch_samplesheet.multiMap {
         meta, input_path, output_path, md5, sha ->
 
-            if (sha && input_path.contains('://')) {
-                if (params.download) {
-                    log.warn("The `--download` parameter is enabled. `RCLONE_CHECKSUM` will download remote files. Make sure this is what you want, as it may incur substantial cloud costs !")
-                } else {
-                    throw new IllegalArgumentException("A SHA checksum file was provided, but `--download` is not enabled. `RCLONE_CHECKSUM` cannot verify SHA256 checksums for remote files without downloading them. Enable `--download` to proceed.")
-                }
-            }
+            def normalized_input_path = input_path.toString().replaceFirst('^([a-zA-Z][a-zA-Z0-9+.-]*)://', '$1:')
+            def normalized_output_path = output_path.toString().replaceFirst('^([a-zA-Z][a-zA-Z0-9+.-]*)://', '$1:')
 
             def source = file(input_path)
 
-            def source_uri = source.toUriString()
-
             def rclone_destination = source.isFile()
-                ? output_path.toString().replaceAll('/+$', '')
-                : "${output_path.toString().replaceAll('/+$', '')}/${source.name}"
+                ? normalized_output_path.replaceAll('/+$', '')
+                : "${normalized_output_path.replaceAll('/+$', '')}/${source.name}"
 
             def rclone_check = source.isFile()
-                ? input_path.replaceFirst('/[^/]+$', '')
-                : input_path.toString().replaceAll('/+$', '')
+                ? normalized_input_path.replaceFirst('/[^/]+$', '')
+                : normalized_input_path.replaceAll('/+$', '')
 
-            rclone:   [ meta, source_uri, rclone_destination ]
+            rclone:   [ meta, normalized_input_path, rclone_destination ]
             checksum: [ meta, md5, sha, rclone_check ]
     }
 
@@ -100,32 +94,34 @@ workflow DATASYNC {
     if(params.copy_matching_only) {
         // Compute expected group size per meta.id from the input
         ch_with_size = ch_checksum
-            .map { meta, _checksum, _hash, _source -> [ meta.subMap(meta.keySet() - 'check_format'), 1 ] }
+            .map { meta, _checksum, _hash, _source ->
+                [ meta.subMap(meta.keySet() - 'check_format'), 1 ]
+            }
             .groupTuple()
             .map { meta, ones -> tuple(meta, ones.size()) }
 
-        files_to_copy = RCLONE_CHECKSUM.out.match.map {
+        ch_files_to_copy = RCLONE_CHECKSUM.out.match
+            .map {
                 meta, match -> [ meta.subMap(meta.keySet() - 'check_format'), match ]
             }
             .combine(ch_with_size, by: 0)
-            .map { meta, match, size -> tuple(groupKey(meta, size), match) }
+            .map { meta, match, size ->
+                tuple(groupKey(meta, size), match)
+            }
             .groupTuple()
-            .map{ meta, files ->
+            .map { meta, files ->
                 def common = files
                     .collect { file_to_copy -> file_to_copy.readLines() }
                     .inject { a, b -> a.intersect(b) }
 
-                def copy_files = java.nio.file.Files.createTempFile(
-                    "${meta.id}_files_to_copy_",
-                    ".txt"
-                )
-                copy_files.text = common.join('\n') + '\n'
-
-                tuple(meta, copy_files)
+                common ? tuple(meta, common) : null
             }
+            .filter { it != null }
+
+        CREATE_FILTER_LIST(ch_files_to_copy)
 
         ch_rclone_copy = ch_samplesheet.rclone
-            .join(files_to_copy)
+            .join(CREATE_FILTER_LIST.out)
     } else {
         ch_rclone_copy = ch_samplesheet.rclone.map { meta, source, destination -> [ meta, source, destination, [] ] }
     }
@@ -137,7 +133,7 @@ workflow DATASYNC {
 
     // Wait for file copy to finish before running RCLONE_CHECK
     ch_rclone_check = ch_samplesheet.rclone
-        .join(RCLONE_COPY.out.log)
+        .join(RCLONE_COPY.out.log, remainder: true)
         .map { meta, input, output, _log -> [ meta, input, output ] }
 
     //

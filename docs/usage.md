@@ -20,13 +20,15 @@ Supply a comma-separated samplesheet with `--input`:
 
 Each row describes an independent transfer. The header names are fixed; columns may be in any order.
 
-| Column         | Required            | Description                                                                                                                                                                                                                             |
-| -------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sample`       | Yes                 | Unique identifier used in task labels and output report names. It must not contain whitespace. Use a unique value for each row to prevent published report files from colliding.                                                        |
-| `input`        | Yes                 | Source file or directory. This can be a local path, HTTP(S) URL, object-storage URL such as `s3://bucket/prefix`, or configured remote such as `source_s3:bucket/prefix` or `source_azure:container/prefix`. Whitespace is not allowed. |
-| `output_path`  | Yes                 | Destination directory understood by rclone, such as `/archive/runs`, `s3://bucket/prefix`, or a configured `remote:path`. Whitespace is not allowed.                                                                                    |
-| `checksum_md5` | One checksum column | Path or URL to an MD5 checksum manifest used to validate `input` before copying. The manifest format is described below. Leave empty when using SHA-256 only.                                                                           |
-| `checksum_sha` | One checksum column | Path or URL to a SHA-256 checksum manifest used to validate `input` before copying. The manifest format is described below. Leave empty when using MD5 only.                                                                            |
+| Column         | Required            | Description                                                                                                                                                                                                                |
+| -------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sample`       | Yes                 | Unique identifier used in task labels and output report names. It must not contain whitespace. Use a unique value for each row to prevent published report files from colliding.                                           |
+| `input`        | Yes                 | Source file or directory. Use a local path or object-storage URI such as `s3://bucket/prefix`. HTTP(S) URLs and rclone-specific `remote:path` syntax are not supported. Whitespace is not allowed.                         |
+| `output_path`  | Yes                 | Destination directory. Use a local path such as `/archive/runs` or an object-storage URI such as `s3://bucket/prefix`. HTTP(S) URLs and rclone-specific `remote:path` syntax are not supported. Whitespace is not allowed. |
+| `checksum_md5` | One checksum column | Path or URL to an MD5 checksum manifest used to validate `input` before copying. The manifest format is described below. Leave empty when using SHA-256 only.                                                              |
+| `checksum_sha` | One checksum column | Path or URL to a SHA-256 checksum manifest used to validate `input` before copying. The manifest format is described below. Leave empty when using MD5 only.                                                               |
+
+HTTP(S) URLs are not currently supported for `input` or `output_path`. The pipeline validates checksum manifests before copying and verifies the copied content afterwards; HTTP checksum behavior is not yet defined and tested for this workflow. Download HTTP-hosted data locally before including it in a samplesheet.
 
 At least one checksum manifest is required on every row. If both are supplied, both validations run. Checksum files must use the format accepted by [`rclone checksum`](https://rclone.org/commands/rclone_checksum/): one checksum record per line with the hash value followed by two spaces and then the file path. Paths must be relative to the source root from the `input` column, not absolute paths.
 
@@ -44,8 +46,8 @@ Example samplesheet:
 ```csv title="samplesheet.csv"
 sample,input,output_path,checksum_md5,checksum_sha
 run_001,/data/run_001,s3://archive/runs,/data/checksums/run_001_md5.tsv,
-reference,https://example.org/reference.fa,/data/references,,/data/checksums/reference_sha256.tsv
-run_002,/data/run_002,archive:runs,/data/checksums/run_002_md5.tsv,/data/checksums/run_002_sha256.tsv
+reference,/data/reference.fa,/data/references,,/data/checksums/reference_sha256.tsv
+run_002,/data/run_002,s3://archive/runs,/data/checksums/run_002_md5.tsv,/data/checksums/run_002_sha256.tsv
 ```
 
 For the `run_001` directory example, `/data/checksums/run_001_md5.tsv` could contain:
@@ -70,17 +72,12 @@ An [example samplesheet](../assets/samplesheet.csv) is included in the repositor
 
 The file supplied with `--rclone_config` uses `rclone`'s INI-style format.
 
-Each `[name]` section defines a remote, and samplesheet paths refer to it as `name:path`. The remote name is an arbitrary local label; it does not need to match the provider or bucket name.
+Each `[name]` section defines an rclone remote used internally by the pipeline. Samplesheet paths must use local paths or standard URIs such as `s3://bucket/path`; `name:path` values are not accepted. For an `s3://` URI, configure the matching `[s3]` remote in the rclone configuration.
 
 > [!NOTE]
 > The pipeline's documented and tested configuration pattern is S3-to-S3 transfer.
 
-One file may contain several sections, so other cloud-to-cloud transfers can define both providers in the same file, but provider-specific options should be taken from the relevant `rclone` documentation. This is an example using S3:
-
-```text
-source_s3:incoming/run_001
-archive_azure:research-archive/run_001
-```
+One file may contain several sections for different providers, but samplesheet URIs select the remote that has the matching scheme name. Provider-specific options should be taken from the relevant `rclone` documentation.
 
 Create the file interactively where possible:
 
@@ -112,9 +109,9 @@ secret_access_key = YOUR_SECRET_ACCESS_KEY
 region = eu-central-1
 ```
 
-The corresponding input values could be `source_s3:incoming/run_001` and `institutional_s3:project/run_002`. Provider-specific settings vary: consult the [`rclone` S3 documentation](https://rclone.org/s3/) and your storage provider's endpoint, region, addressing-style, and credential documentation rather than copying example values unchanged.
+Use `s3://bucket/path` for S3 sources and destinations in the samplesheet. The pipeline converts this to rclone's internal `s3:bucket/path` form, so ensure rclone has credentials and provider settings for the `[s3]` remote. Provider-specific settings vary: consult the [`rclone` S3 documentation](https://rclone.org/s3/) and your storage provider's endpoint, region, addressing-style, and credential documentation rather than copying example values unchanged.
 
-The pipeline also accepts an `s3://bucket/path` source or destination. In that form, ensure credentials and provider settings are available to both Nextflow and `rclone` in the execution environment. A named remote such as `source_s3:bucket/path` makes the selected configuration section explicit and is preferable when a config file contains multiple S3 providers.
+Because samplesheet paths use URI schemes rather than rclone remote names, a single samplesheet cannot select multiple differently configured S3 remotes. Use one `[s3]` configuration for the run, or run separate transfers when providers require different rclone configurations.
 
 ## SHA256 checksum verification for remote inputs
 

@@ -12,17 +12,17 @@
                     },
                     "rclone/check": {
                         "branch": "master",
-                        "git_sha": "fef5b8209601b7746f9705f63e5856cd2b5be708",
+                        "git_sha": "0f1a09cd10bb7a05bfedb3d8780f985751f9c614",
                         "installed_by": ["modules"]
                     },
                     "rclone/checksum": {
                         "branch": "master",
-                        "git_sha": "fef5b8209601b7746f9705f63e5856cd2b5be708",
+                        "git_sha": "0f1a09cd10bb7a05bfedb3d8780f985751f9c614",
                         "installed_by": ["modules"]
                     },
                     "rclone/copy": {
                         "branch": "master",
-                        "git_sha": "b34acd9d361bb226be8f0cf446b8b3a20ad0e3da",
+                        "git_sha": "0f1a09cd10bb7a05bfedb3d8780f985751f9c614",
                         "installed_by": ["modules"]
                     }
                 }

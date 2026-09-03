@@ -30,11 +30,11 @@
 3. compares the copied data with the source using [`rclone check`](https://rclone.org/commands/rclone_check/); and
 4. produces detailed `rclone` status files and a consolidated MultiQC report.
 
-Sources and destinations may be local paths, HTTP(S) URLs, or rclone-supported remote storage such as Amazon S3, S3-compatible object storage, or Azure Blob Storage.
+Sources and destinations may be local paths or object-storage URIs such as Amazon S3, S3-compatible storage, or Azure Blob Storage. HTTP(S) URLs are not currently supported for samplesheet `input` or `output_path` values.
 
 The current tested use case for this pipeline is transfer between S3 buckets.
 
-Pass an `rclone` configuration with `--rclone_config` whenever a source or destination needs a configured remote, endpoint, or credentials. A single configuration file can contain separate named remotes for multiple providers; for non-S3 layouts, design and validate the provider-specific configuration using the upstream [rclone documentation](https://rclone.org/docs/).
+Pass an `rclone` configuration with `--rclone_config` whenever a source or destination URI needs credentials or provider settings. Samplesheet paths use local paths or standard URIs such as `s3://bucket/path`, not rclone's `remote:path` syntax. For non-S3 layouts, design and validate the provider-specific configuration using the upstream [rclone documentation](https://rclone.org/docs/).
 
 ![nf-core/datasync metro map](docs/images/datasync-metromap.png)
 
@@ -58,7 +58,7 @@ To run the pipeline on your own data, create a samplesheet containing one transf
 ```csv
 sample,input,output_path,checksum_md5,checksum_sha
 run_001,/data/run_001,s3://archive/runs,/data/manifests/run_001_md5.tsv
-reference,https://example.org/reference.fa,/data/references,,/data/manifests/reference_sha256.tsv
+reference,/data/reference.fa,/data/references,,/data/manifests/reference_sha256.tsv
 ```
 
 Then launch the pipeline using:

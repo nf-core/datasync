@@ -24,6 +24,7 @@ Initial release of nf-core/datasync, created with the [nf-core](https://nf-co.re
 
 ### `Fixed`
 
+- [[#84](https://github.com/nf-core/datasync/pull/84)] - Update `RCLONE_` modules, enhance source and destination path handling, add local `create_filter_list` module and other small fixes ([@delfiterradas](https://github.com/delfiterradas), review by [@atrigila](https://github.com/atrigila)).
 - [[#83](https://github.com/nf-core/datasync/pull/83)] - Add apptainer version to avoid error in CI test ([@delfiterradas](https://github.com/delfiterradas), review by [@atrigila](https://github.com/atrigila)).
 - [[#78](https://github.com/nf-core/datasync/pull/78)] - Fixed linting issues reported by nf-core and Nextflow, and updated `rclone` modules and nf-tests to sort generated report files for deterministic snapshots ([@atrigila](https://github.com/atrigila), review by [@delfiterradas](https://github.com/delfiterradas) and [@antoniasaracco](https://github.com/antoniasaracco)).
 - [[#76](https://github.com/nf-core/datasync/pull/76)] - Remove `--one-way` from rclone/checksum confi ([@delfiterradas](https://github.com/delfiterradas), review by [@atrigila](https://github.com/atrigila) and [@antoniasaracco](https://github.com/antoniasaracco)).

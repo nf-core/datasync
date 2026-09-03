@@ -4,6 +4,7 @@
     "title": "nf-core/datasync pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
     "type": "array",
+    "uniqueEntries": ["sample"],
     "items": {
         "type": "object",
         "properties": {
@@ -16,12 +17,36 @@
             "input": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Input path must be provided and cannot contain spaces"
+                "allOf": [
+                    {
+                        "not": {
+                            "pattern": "^[a-zA-Z][a-zA-Z0-9_.+-]*:(?!//).*$"
+                        }
+                    },
+                    {
+                        "not": {
+                            "pattern": "^https?://.*$"
+                        }
+                    }
+                ],
+                "errorMessage": "Input must be a local path or object-storage URI such as s3://bucket/path; HTTP(S) URLs and rclone remote:path syntax are not supported"
             },
             "output_path": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Output path for rclone copy must be provided and cannot contain spaces"
+                "allOf": [
+                    {
+                        "not": {
+                            "pattern": "^[a-zA-Z][a-zA-Z0-9_.+-]*:(?!//).*$"
+                        }
+                    },
+                    {
+                        "not": {
+                            "pattern": "^https?://.*$"
+                        }
+                    }
+                ],
+                "errorMessage": "Output path must be a local path or object-storage URI such as s3://bucket/path; HTTP(S) URLs and rclone remote:path syntax are not supported"
             },
             "checksum_md5": {
                 "type": "string",
