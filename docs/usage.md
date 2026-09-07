@@ -208,6 +208,19 @@ genome: 'GRCh37'
 
 You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-co.re/launch).
 
+### Real copy example
+
+The `test_copy` profile provides a small real-transfer example that can be used to test the pipeline locally. It copies public test directories to `results/destination`and verifies the copied files:
+
+```bash
+nextflow run nf-core/datasync \
+    -r <VERSION> \
+    -profile test_copy,docker \
+    --outdir /data/datasync-test-copy-results
+```
+
+This profile does not use `--rclone_dry_run`; it transfers data to your local environment. Although the data is small, the run accesses cloud-hosted data and may incur network or cloud egress charges. Review your environment's costs before running this test profile.
+
 ### Parameter files
 
 Frequently reused settings can be stored in YAML or JSON and loaded with `-params-file`:

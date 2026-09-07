@@ -1,0 +1,5 @@
+sample,input,output_path,checksum_md5,checksum_sha
+Illumina_annotation_missing,s3://ngi-igenomes/igenomes/PhiX/Illumina/RTA/Annotation/Archives/,./results/destination/,https://raw.githubusercontent.com/nf-core/test-datasets/datasync/test-data/Illumina_annotation_missing_md5.tsv,
+Illumina_annotation_incorrect,s3://ngi-igenomes/igenomes/PhiX/Illumina/RTA/Annotation/Archives/,./results/destination/,https://raw.githubusercontent.com/nf-core/test-datasets/datasync/test-data/Illumina_annotation_incorrect_md5.tsv,
+Illumina_annotation_sha_only,s3://ngi-igenomes/igenomes/PhiX/Illumina/RTA/Annotation/Archives/,./results/destination/,,https://raw.githubusercontent.com/nf-core/test-datasets/datasync/test-data/Illumina_annotation_incorrect_sha.tsv
+benchmark_bed,gs://deepvariant/GIAB_v5q0/HG002_GRCh38_v5.0q_smvar.benchmark.bed,./results/destination/,https://raw.githubusercontent.com/nf-core/test-datasets/datasync/test-data/bed_md5.tsv

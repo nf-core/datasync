@@ -9,6 +9,7 @@ Initial release of nf-core/datasync, created with the [nf-core](https://nf-co.re
 
 ### `Added`
 
+- [[#87](https://github.com/nf-core/datasync/pull/87)] - Add local test profile ([@delfiterradas](https://github.com/delfiterradas), review by [@atrigila](https://github.com/atrigila)).
 - [[#79](https://github.com/nf-core/datasync/pull/79)] - Add exit status for `RCLONE` modules in multiqc report ([@delfiterradas](https://github.com/delfiterradas), review by [@atrigila](https://github.com/atrigila)).
 - [[#74](https://github.com/nf-core/datasync/pull/74)] - Implement warning and `--download` parameter when working with remote directories and SHA checksums ([@delfiterradas](https://github.com/delfiterradas), review by [@atrigila](https://github.com/atrigila), [@apeltzer](https://github.com/apeltzer) and [@antoniasaracco](https://github.com/antoniasaracco)).
 - [[#67](https://github.com/nf-core/datasync/pull/67)] - Copy only files which are successfully validated ([@delfiterradas](https://github.com/delfiterradas), review by [@atrigila](https://github.com/atrigila) and [@antoniasaracco](https://github.com/antoniasaracco)).
