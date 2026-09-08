@@ -1,3 +1,10 @@
+lint:
+  files_exist:
+    - .github/workflows/linting_comment.yml
+  files_unchanged:
+    - .github/workflows/branch.yml
+    - .github/workflows/linting.yml
+  multiqc_config: false
 nf_core_version: 4.1.0
 repository_type: pipeline
 template:
@@ -9,10 +16,3 @@ template:
   org: nf-core
   outdir: .
   version: 1.0.0
-lint:
-  multiqc_config: false
-  files_exist:
-    - .github/workflows/linting_comment.yml
-  files_unchanged:
-    - .github/workflows/branch.yml
-    - .github/workflows/linting.yml

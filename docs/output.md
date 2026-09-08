@@ -144,3 +144,5 @@ Open `multiqc_report.html` after every run and investigate any non-matching, mis
 These files provide operational provenance and help diagnose performance or failures. Archive them with the MultiQC and rclone reports. The Nextflow `work/` directory and `.nextflow.log` remain in the launch directory rather than `--outdir`; keep them until transfer verification is complete if detailed troubleshooting or `-resume` may be needed.
 
 The supplied rclone configuration is an input credential file and is not intentionally copied to `--outdir`. Nevertheless, execution logs may contain remote names and object paths. Review logs before sharing them, and manage `rclone.conf` separately as a secret.
+
+[Nextflow](https://docs.seqera.io/platform-cloud/reports/overview) provides excellent functionality for generating various reports relevant to the running and execution of the pipeline. This will allow you to troubleshoot errors with the running of the pipeline, and also provide you with other information such as launch commands, run times and resource usage.
