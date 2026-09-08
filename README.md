@@ -32,7 +32,7 @@ The current tested use case for this pipeline is transfer between S3 buckets.
 
 Pass an `rclone` configuration with `--rclone_config` whenever a source or destination URI needs credentials or provider settings. Samplesheet paths use local paths or standard URIs such as `s3://bucket/path`, not rclone's `remote:path` syntax. For non-S3 layouts, design and validate the provider-specific configuration using the upstream [rclone documentation](https://rclone.org/docs/).
 
-![nf-core/datasync metro map](docs/images/datasync-metromap.png)
+![nf-core/datasync metro map](docs/images/datasync_nf-metro.svg)
 
 ## Quick start
 
