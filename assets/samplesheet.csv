@@ -1,2 +1,2 @@
 sample,input,output_path,checksum_md5
-sample,path/to/file,output_path,path/to/file
+sample,s3://foo/path/to/files/,output_path/data,path/to/checksum.md5

@@ -1,2 +1,0 @@
-sample,input,checksum_md5,checksum_sha
-demultiplex,s3://nf-core-awsmegatests/demultiplex/results-fbec8e442f0599f8b74876e62263af05b9a41d33/,checksum_md5.tsv,checksum_sha.tsv
