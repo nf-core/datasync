@@ -15,9 +15,3 @@ Initial release of nf-core/datasync, created with the [nf-core](https://nf-co.re
 - Post-transfer comparison of copied data against the source, with detailed rclone status files for each sample.
 - A MultiQC report covering the input samplesheet, validation summary, checksum validation, and post-transfer checks.
 - A local test profile to explore the pipeline and its outputs.
-
-### `Fixed`
-
-### `Dependencies`
-
-### `Deprecated`
