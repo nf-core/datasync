@@ -1,0 +1,214 @@
+{
+    "-profile test copy matching files only": {
+        "content": [
+            {
+                "RCLONE_CHECK": {
+                    "rclone": "1.74.3-DEV"
+                },
+                "RCLONE_CHECKSUM": {
+                    "rclone": "1.74.3-DEV"
+                },
+                "RCLONE_COPY": {
+                    "rclone": "1.74.3-DEV"
+                },
+                "Workflow": {
+                    "nf-core/datasync": "v1.0.0"
+                }
+            },
+            [
+                "create",
+                "create/files_to_copy.txt",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_rclone_check.txt",
+                "multiqc/multiqc_data/multiqc_rclone_checksum_md5.txt",
+                "multiqc/multiqc_data/multiqc_rclone_checksum_sha.txt",
+                "multiqc/multiqc_data/multiqc_rclone_exit_codes.txt",
+                "multiqc/multiqc_data/multiqc_samplesheet.txt",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_datasync_software_mqc_versions.yml",
+                "rclone",
+                "rclone/check",
+                "rclone/check/Illumina_annotation_incorrect",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect_check.combined.txt",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect_check.exit_code.txt",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect_check.match.txt",
+                "rclone/check/Illumina_annotation_missing",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing_check.combined.txt",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing_check.exit_code.txt",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing_check.match.txt",
+                "rclone/check/Illumina_annotation_sha_only",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only_check.combined.txt",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only_check.exit_code.txt",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only_check.match.txt",
+                "rclone/checksum",
+                "rclone/checksum/Illumina_annotation_incorrect",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect_checksum_MD5.combined.txt",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect_checksum_MD5.differ.txt",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect_checksum_MD5.exit_code.txt",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect_checksum_MD5.match.txt",
+                "rclone/checksum/Illumina_annotation_missing",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing_checksum_MD5.combined.txt",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing_checksum_MD5.exit_code.txt",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing_checksum_MD5.match.txt",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing_checksum_MD5.missing_on_dst.txt",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing_checksum_MD5.missing_on_src.txt",
+                "rclone/checksum/Illumina_annotation_sha_only",
+                "rclone/checksum/Illumina_annotation_sha_only/Illumina_annotation_sha_only_checksum_SHA256.combined.txt",
+                "rclone/checksum/Illumina_annotation_sha_only/Illumina_annotation_sha_only_checksum_SHA256.differ.txt",
+                "rclone/checksum/Illumina_annotation_sha_only/Illumina_annotation_sha_only_checksum_SHA256.exit_code.txt",
+                "rclone/copy",
+                "rclone/copy/Illumina_annotation_incorrect-rclone-copy.log",
+                "rclone/copy/Illumina_annotation_missing-rclone-copy.log"
+            ],
+            [
+                "files_to_copy.txt:md5,df576e44dfe5a24521997ef162cba157",
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
+                "multiqc_rclone_check.txt:md5,c8f13c10aa4f0e4b356c5c08a9ae7ee9",
+                "multiqc_rclone_checksum_md5.txt:md5,40ef26b67a9f5c4943a12d412f4e632f",
+                "multiqc_rclone_checksum_sha.txt:md5,8d38305a4ad03c7ea18aa9827d34a396",
+                "multiqc_rclone_exit_codes.txt:md5,3dd8d4741882ff589545c2f2fcc99520",
+                "multiqc_samplesheet.txt:md5,bbfc817ff43c49cde14a2b33f46b5ae5",
+                "Illumina_annotation_incorrect_check.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_incorrect_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
+                "Illumina_annotation_incorrect_check.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
+                "Illumina_annotation_missing_check.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_missing_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
+                "Illumina_annotation_missing_check.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
+                "Illumina_annotation_sha_only_check.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_sha_only_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
+                "Illumina_annotation_sha_only_check.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
+                "Illumina_annotation_incorrect_checksum_MD5.combined.txt:md5,34ecbd1fa8f707c75898ee45cadf45d6",
+                "Illumina_annotation_incorrect_checksum_MD5.differ.txt:md5,e5fdf362a1dc4ac877f92ee769e47fd8",
+                "Illumina_annotation_incorrect_checksum_MD5.exit_code.txt:md5,b026324c6904b2a9cb4b88d6d61c81d1",
+                "Illumina_annotation_incorrect_checksum_MD5.match.txt:md5,df576e44dfe5a24521997ef162cba157",
+                "Illumina_annotation_missing_checksum_MD5.combined.txt:md5,4030b978509bbd39819efab4d91d7f32",
+                "Illumina_annotation_missing_checksum_MD5.exit_code.txt:md5,b026324c6904b2a9cb4b88d6d61c81d1",
+                "Illumina_annotation_missing_checksum_MD5.match.txt:md5,df576e44dfe5a24521997ef162cba157",
+                "Illumina_annotation_missing_checksum_MD5.missing_on_dst.txt:md5,793e4b78c8b125e4421cb20ed0c232d5",
+                "Illumina_annotation_missing_checksum_MD5.missing_on_src.txt:md5,e5fdf362a1dc4ac877f92ee769e47fd8",
+                "Illumina_annotation_sha_only_checksum_SHA256.combined.txt:md5,0d2bc4aeee4fded37d5cfebfadfb2fd2",
+                "Illumina_annotation_sha_only_checksum_SHA256.differ.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
+                "Illumina_annotation_sha_only_checksum_SHA256.exit_code.txt:md5,b026324c6904b2a9cb4b88d6d61c81d1"
+            ]
+        ],
+        "timestamp": "2026-09-02T18:26:55.720186858",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.1"
+        }
+    },
+    "-profile test edge cases": {
+        "content": [
+            {
+                "RCLONE_CHECK": {
+                    "rclone": "1.74.3-DEV"
+                },
+                "RCLONE_CHECKSUM": {
+                    "rclone": "1.74.3-DEV"
+                },
+                "RCLONE_COPY": {
+                    "rclone": "1.74.3-DEV"
+                },
+                "Workflow": {
+                    "nf-core/datasync": "v1.0.0"
+                }
+            },
+            [
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_rclone_check.txt",
+                "multiqc/multiqc_data/multiqc_rclone_checksum_md5.txt",
+                "multiqc/multiqc_data/multiqc_rclone_checksum_sha.txt",
+                "multiqc/multiqc_data/multiqc_rclone_exit_codes.txt",
+                "multiqc/multiqc_data/multiqc_samplesheet.txt",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_datasync_software_mqc_versions.yml",
+                "rclone",
+                "rclone/check",
+                "rclone/check/Illumina_annotation_incorrect",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect_check.combined.txt",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect_check.exit_code.txt",
+                "rclone/check/Illumina_annotation_incorrect/Illumina_annotation_incorrect_check.match.txt",
+                "rclone/check/Illumina_annotation_missing",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing_check.combined.txt",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing_check.exit_code.txt",
+                "rclone/check/Illumina_annotation_missing/Illumina_annotation_missing_check.match.txt",
+                "rclone/check/Illumina_annotation_sha_only",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only_check.combined.txt",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only_check.exit_code.txt",
+                "rclone/check/Illumina_annotation_sha_only/Illumina_annotation_sha_only_check.match.txt",
+                "rclone/checksum",
+                "rclone/checksum/Illumina_annotation_incorrect",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect_checksum_MD5.combined.txt",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect_checksum_MD5.differ.txt",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect_checksum_MD5.exit_code.txt",
+                "rclone/checksum/Illumina_annotation_incorrect/Illumina_annotation_incorrect_checksum_MD5.match.txt",
+                "rclone/checksum/Illumina_annotation_missing",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing_checksum_MD5.combined.txt",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing_checksum_MD5.exit_code.txt",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing_checksum_MD5.match.txt",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing_checksum_MD5.missing_on_dst.txt",
+                "rclone/checksum/Illumina_annotation_missing/Illumina_annotation_missing_checksum_MD5.missing_on_src.txt",
+                "rclone/checksum/Illumina_annotation_sha_only",
+                "rclone/checksum/Illumina_annotation_sha_only/Illumina_annotation_sha_only_checksum_SHA256.combined.txt",
+                "rclone/checksum/Illumina_annotation_sha_only/Illumina_annotation_sha_only_checksum_SHA256.differ.txt",
+                "rclone/checksum/Illumina_annotation_sha_only/Illumina_annotation_sha_only_checksum_SHA256.exit_code.txt",
+                "rclone/copy",
+                "rclone/copy/Illumina_annotation_incorrect-rclone-copy.log",
+                "rclone/copy/Illumina_annotation_missing-rclone-copy.log",
+                "rclone/copy/Illumina_annotation_sha_only-rclone-copy.log"
+            ],
+            [
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f",
+                "multiqc_rclone_check.txt:md5,c8f13c10aa4f0e4b356c5c08a9ae7ee9",
+                "multiqc_rclone_checksum_md5.txt:md5,40ef26b67a9f5c4943a12d412f4e632f",
+                "multiqc_rclone_checksum_sha.txt:md5,8d38305a4ad03c7ea18aa9827d34a396",
+                "multiqc_rclone_exit_codes.txt:md5,3dd8d4741882ff589545c2f2fcc99520",
+                "multiqc_samplesheet.txt:md5,bbfc817ff43c49cde14a2b33f46b5ae5",
+                "Illumina_annotation_incorrect_check.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_incorrect_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
+                "Illumina_annotation_incorrect_check.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
+                "Illumina_annotation_missing_check.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_missing_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
+                "Illumina_annotation_missing_check.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
+                "Illumina_annotation_sha_only_check.combined.txt:md5,bbb93addf748c7c6cbe5ad1e25bf54bb",
+                "Illumina_annotation_sha_only_check.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
+                "Illumina_annotation_sha_only_check.match.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
+                "Illumina_annotation_incorrect_checksum_MD5.combined.txt:md5,34ecbd1fa8f707c75898ee45cadf45d6",
+                "Illumina_annotation_incorrect_checksum_MD5.differ.txt:md5,e5fdf362a1dc4ac877f92ee769e47fd8",
+                "Illumina_annotation_incorrect_checksum_MD5.exit_code.txt:md5,b026324c6904b2a9cb4b88d6d61c81d1",
+                "Illumina_annotation_incorrect_checksum_MD5.match.txt:md5,df576e44dfe5a24521997ef162cba157",
+                "Illumina_annotation_missing_checksum_MD5.combined.txt:md5,4030b978509bbd39819efab4d91d7f32",
+                "Illumina_annotation_missing_checksum_MD5.exit_code.txt:md5,b026324c6904b2a9cb4b88d6d61c81d1",
+                "Illumina_annotation_missing_checksum_MD5.match.txt:md5,df576e44dfe5a24521997ef162cba157",
+                "Illumina_annotation_missing_checksum_MD5.missing_on_dst.txt:md5,793e4b78c8b125e4421cb20ed0c232d5",
+                "Illumina_annotation_missing_checksum_MD5.missing_on_src.txt:md5,e5fdf362a1dc4ac877f92ee769e47fd8",
+                "Illumina_annotation_sha_only_checksum_SHA256.combined.txt:md5,0d2bc4aeee4fded37d5cfebfadfb2fd2",
+                "Illumina_annotation_sha_only_checksum_SHA256.differ.txt:md5,eb40be996bfbcf8070103efaa6bfa4c5",
+                "Illumina_annotation_sha_only_checksum_SHA256.exit_code.txt:md5,b026324c6904b2a9cb4b88d6d61c81d1"
+            ]
+        ],
+        "timestamp": "2026-09-02T18:26:27.114460768",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.1"
+        }
+    }
+}
