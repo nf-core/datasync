@@ -7,12 +7,7 @@ process CREATE_FILTER_LIST {
     output:
     tuple val(meta), path('files_to_copy.txt')
 
-    script:
-    def content = common.join('\n')
-
-    """
-    cat > files_to_copy.txt <<'EOF'
-${content}
-EOF
-    """
+    exec:
+    def outFile = task.workDir.resolve('files_to_copy.txt')
+    outFile.text = common.join('\n') + '\n'
 }

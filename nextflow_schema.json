@@ -47,24 +47,24 @@
                     "exists": true,
                     "description": "Path to the rclone config file used for cloud storage authentication.",
                     "help_text": "Provide an rclone config file to support cloud providers such as AWS S3 or Azure Blob Storage. This file is loaded by rclone when copying data.",
-                    "fa_icon": "fas fa-file"
+                    "fa_icon": "fas fa-cog"
                 },
                 "rclone_dry_run": {
                     "type": "boolean",
                     "description": "Perform a dry run of the rclone copy command.",
-                    "fa_icon": "fas fa-eye",
+                    "fa_icon": "fas fa-forward",
                     "help_text": "If set, the pipeline will not actually copy any files to the destination. Instead, it will print out what would have been copied. This is useful for testing and debugging."
                 },
                 "copy_matching_only": {
                     "type": "boolean",
                     "description": "Only copy files that matched their provided input checksums.",
-                    "fa_icon": "fas fa-eye",
+                    "fa_icon": "fas fa-copy",
                     "help_text": "If set, the pipeline will only copy files that were correctly validated and will skip any file that did not match their input checksum."
                 },
                 "download": {
                     "type": "boolean",
                     "description": "Download remote files for sha256 checksum verification in `RCLONE_CHECKSUM`.",
-                    "fa_icon": "fas fa-eye",
+                    "fa_icon": "fas fa-cloud-download-alt",
                     "help_text": "If set, `RCLONE_CHECKSUM` will download remote files for any sample for which a SHA256 file was provided."
                 }
             }
