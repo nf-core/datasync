@@ -4,6 +4,7 @@
     "title": "nf-core/datasync pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
     "type": "array",
+    "uniqueEntries": ["sample"],
     "items": {
         "type": "object",
         "properties": {
@@ -13,21 +14,54 @@
                 "errorMessage": "Sample name must be provided and cannot contain spaces",
                 "meta": ["id"]
             },
-            "fastq_1": {
+            "input": {
                 "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "pattern": "^\\S+$",
+                "allOf": [
+                    {
+                        "not": {
+                            "pattern": "^[a-zA-Z][a-zA-Z0-9_.+-]*:(?!//).*$"
+                        }
+                    },
+                    {
+                        "not": {
+                            "pattern": "^https?://.*$"
+                        }
+                    }
+                ],
+                "errorMessage": "Input must be a local path or object-storage URI such as s3://bucket/path; HTTP(S) URLs and rclone remote:path syntax are not supported"
             },
-            "fastq_2": {
+            "output_path": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "allOf": [
+                    {
+                        "not": {
+                            "pattern": "^[a-zA-Z][a-zA-Z0-9_.+-]*:(?!//).*$"
+                        }
+                    },
+                    {
+                        "not": {
+                            "pattern": "^https?://.*$"
+                        }
+                    }
+                ],
+                "errorMessage": "Output path must be a local path or object-storage URI such as s3://bucket/path; HTTP(S) URLs and rclone remote:path syntax are not supported"
+            },
+            "checksum_md5": {
                 "type": "string",
                 "format": "file-path",
-                "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "pattern": "^\\S+\\.(tsv|txt|md5)$",
+                "errorMessage": "Checksum_md5 cannot contain spaces"
+            },
+            "checksum_sha": {
+                "type": "string",
+                "format": "file-path",
+                "pattern": "^\\S+\\.(tsv|txt|sha256)$",
+                "errorMessage": "Checksum_sha cannot contain spaces"
             }
         },
-        "required": ["sample", "fastq_1"]
+        "required": ["sample", "input", "output_path"],
+        "anyOf": [{ "required": ["checksum_md5"] }, { "required": ["checksum_sha"] }]
     }
 }

@@ -40,44 +40,32 @@
                     "type": "string",
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
                     "fa_icon": "fas fa-file-signature"
-                }
-            }
-        },
-        "reference_genome_options": {
-            "title": "Reference genome options",
-            "type": "object",
-            "fa_icon": "fas fa-dna",
-            "description": "Reference genome related files and options required for the workflow.",
-            "properties": {
-                "genome": {
-                    "type": "string",
-                    "description": "Name of iGenomes reference.",
-                    "fa_icon": "fas fa-book",
-                    "help_text": "If using a reference genome configured in the pipeline using iGenomes, use this parameter to give the ID for the reference. This is then used to build the full paths for all required reference genome files e.g. `--genome GRCh38`. \n\nSee the [nf-core website docs](https://nf-co.re/usage/reference_genomes) for more details."
                 },
-                "fasta": {
+                "rclone_config": {
                     "type": "string",
                     "format": "file-path",
                     "exists": true,
-                    "mimetype": "text/plain",
-                    "pattern": "^\\S+\\.fn?a(sta)?(\\.gz)?$",
-                    "description": "Path to FASTA genome file.",
-                    "help_text": "This parameter is *mandatory* if `--genome` is not specified. If you don't have a BWA index available this will be generated for you automatically. Combine with `--save_reference` to save BWA index for future runs.",
-                    "fa_icon": "far fa-file-code"
+                    "description": "Path to the rclone config file used for cloud storage authentication.",
+                    "help_text": "Provide an rclone config file to support cloud providers such as AWS S3 or Azure Blob Storage. This file is loaded by rclone when copying data.",
+                    "fa_icon": "fas fa-cog"
                 },
-                "igenomes_ignore": {
+                "rclone_dry_run": {
                     "type": "boolean",
-                    "description": "Do not load the iGenomes reference config.",
-                    "fa_icon": "fas fa-ban",
-                    "hidden": true,
-                    "help_text": "Do not load `igenomes.config` when running the pipeline. You may choose this option if you observe clashes between custom parameters and those supplied in `igenomes.config`."
+                    "description": "Perform a dry run of the rclone copy command.",
+                    "fa_icon": "fas fa-forward",
+                    "help_text": "If set, the pipeline will not actually copy any files to the destination. Instead, it will print out what would have been copied. This is useful for testing and debugging."
                 },
-                "igenomes_base": {
-                    "type": "string",
-                    "description": "The base path to the igenomes reference files",
-                    "fa_icon": "fas fa-ban",
-                    "hidden": true,
-                    "default": "s3://ngi-igenomes/igenomes/"
+                "copy_matching_only": {
+                    "type": "boolean",
+                    "description": "Only copy files that matched their provided input checksums.",
+                    "fa_icon": "fas fa-copy",
+                    "help_text": "If set, the pipeline will only copy files that were correctly validated and will skip any file that did not match their input checksum."
+                },
+                "download": {
+                    "type": "boolean",
+                    "description": "Download remote files for sha256 checksum verification in `RCLONE_CHECKSUM`.",
+                    "fa_icon": "fas fa-cloud-download-alt",
+                    "help_text": "If set, `RCLONE_CHECKSUM` will download remote files for any sample for which a SHA256 file was provided."
                 }
             }
         },
@@ -208,7 +196,7 @@
                     "type": "string",
                     "fa_icon": "far fa-check-circle",
                     "description": "Base URL or local path to location of pipeline test dataset files",
-                    "default": "https://raw.githubusercontent.com/nf-core/test-datasets/",
+                    "default": "https://raw.githubusercontent.com/nf-core/test-datasets/datasync/",
                     "hidden": true
                 },
                 "trace_report_suffix": {
@@ -235,9 +223,6 @@
     "allOf": [
         {
             "$ref": "#/$defs/input_output_options"
-        },
-        {
-            "$ref": "#/$defs/reference_genome_options"
         },
         {
             "$ref": "#/$defs/institutional_config_options"
