@@ -5,7 +5,7 @@
 This document describes the reports produced by nf-core/datasync. Paths below are relative to the directory supplied with `--outdir`.
 
 > [!IMPORTANT]
-> The copied payload is written to each samplesheet row's `output_path`. It is not placed in `--outdir` unless `output_path` explicitly points there.
+> The copied payload is written to each samplesheet row's `output_path`. It is not placed in `--outdir` unless `output_path` explicitly points to the same path as the one specified for `--outdir`.
 
 ## Output overview
 
