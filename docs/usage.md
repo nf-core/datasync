@@ -32,14 +32,33 @@ HTTP(S) URLs are not currently supported for `input` or `output_path`. The pipel
 
 At least one checksum manifest is required on every row. If both are supplied, both validations run. Checksum files must use the format accepted by [`rclone checksum`](https://rclone.org/commands/rclone_checksum/): one checksum record per line with the hash value followed by two spaces and then the file path. Paths must be relative to the source root from the `input` column, not absolute paths.
 
-For a directory input, the source root is the directory named in the samplesheet. For example, if the samplesheet `input` is `/data/run_001` and one file in that directory is `/data/run_001/reads/sample_R1.fastq.gz`, the checksum manifest path must be `reads/sample_R1.fastq.gz`. Do not write `/data/run_001/reads/sample_R1.fastq.gz` in the manifest. For a single-file input, use the input file name as the manifest path.
+For a directory input, paths are relative to the directory named in the samplesheet. For example, if `input` is `/data/run_001` and it contains `/data/run_001/reads/sample_R1.fastq.gz`, the checksum manifest path must be `reads/sample_R1.fastq.gz`, not the absolute path. For a single-file input, the pipeline checks the manifest against the file's parent directory, so the manifest path must be the file name. For example, an `input` of `/data/reference.fa` requires a manifest entry ending in `reference.fa`.
+
+You can generate a correctly formatted MD5 manifest with `rclone md5sum`. Write the manifest outside the input directory so that it is not included among the files being hashed:
+
+```bash
+rclone md5sum ./data/run_001 > ./data/checksums/run_001_md5.txt
+rclone md5sum ./data/reference.fa > ./data/checksums/reference_md5.txt
+```
+
+For SHA-256, use `rclone hashsum SHA256`:
+
+```bash
+rclone hashsum SHA256 ./data/run_001 > ./data/checksums/run_001_sha256.txt
+```
+
+For an object-storage source, use the corresponding configured rclone remote syntax when generating the manifest. For example, the samplesheet input `s3://bucket/prefix` corresponds to `s3:bucket/prefix` when the rclone configuration contains an `[s3]` remote:
+
+```bash
+rclone md5sum --config ./secure/rclone.conf s3:bucket/prefix > run_001_md5.txt
+```
 
 Checksum manifests may use a `.tsv`, `.txt`, `.md5` or `.sha256` filename extension, but their contents are not tab-separated or comma-separated tables and must not include a header. Each record is plain text with the hash and path separated by exactly **two spaces**. The required fields are:
 
-| Field | Required | Description                                                                                     |
-| ----- | -------- | ----------------------------------------------------------------------------------------------- |
-| Hash  | Yes      | MD5 hash for `checksum_md5` files or SHA-256 hash for `checksum_sha` files.                     |
-| Path  | Yes      | Relative path to the file being validated, resolved from the corresponding `input` source root. |
+| Field | Required | Description                                                                                                    |
+| ----- | -------- | -------------------------------------------------------------------------------------------------------------- |
+| Hash  | Yes      | MD5 hash for `checksum_md5` files or SHA-256 hash for `checksum_sha` files.                                    |
+| Path  | Yes      | Path relative to a directory `input`, or the file name (without parent directories) for a single-file `input`. |
 
 Example samplesheet:
 
@@ -154,9 +173,9 @@ A typical local-to-cloud run is:
 nextflow run nf-core/datasync \
     -r <VERSION> \
     -profile docker \
-    --input /data/samplesheet.csv \
-    --outdir /data/datasync-results \
-    --rclone_config /secure/rclone.conf
+    --input ./data/samplesheet.csv \
+    --outdir ./data/datasync-results \
+    --rclone_config ./secure/rclone.conf
 ```
 
 `--outdir` stores logs, integrity reports, MultiQC, and execution metadata. It does **not** override the transfer destinations in the samplesheet.
@@ -167,9 +186,9 @@ To inspect the proposed copy without writing destination data:
 nextflow run nf-core/datasync \
     -r <VERSION> \
     -profile docker \
-    --input /data/samplesheet.csv \
-    --outdir /data/datasync-dry-run \
-    --rclone_config /secure/rclone.conf \
+    --input ./data/samplesheet.csv \
+    --outdir ./data/datasync-dry-run \
+    --rclone_config ./secure/rclone.conf \
     --rclone_dry_run
 ```
 
@@ -216,7 +235,7 @@ The `test_copy` profile provides a small real-transfer example that can be used 
 nextflow run nf-core/datasync \
     -r <VERSION> \
     -profile test_copy,docker \
-    --outdir /data/datasync-test-copy-results
+    --outdir ./data/datasync-test-copy-results
 ```
 
 This profile does not use `--rclone_dry_run`; it transfers data to your local environment. Although the data is small, the run accesses cloud-hosted data and may incur network or cloud egress charges. Review your environment's costs before running this test profile.

@@ -34,20 +34,20 @@
                 "pipeline_info",
                 "pipeline_info/nf_core_datasync_software_mqc_versions.yml",
                 "rclone",
-                "rclone/check",
-                "rclone/check/demultiplex",
-                "rclone/check/demultiplex/demultiplex_check.combined.txt",
-                "rclone/check/demultiplex/demultiplex_check.exit_code.txt",
-                "rclone/check/demultiplex/demultiplex_check.match.txt",
-                "rclone/checksum",
-                "rclone/checksum/demultiplex",
-                "rclone/checksum/demultiplex/demultiplex_checksum_MD5.combined.txt",
-                "rclone/checksum/demultiplex/demultiplex_checksum_MD5.exit_code.txt",
-                "rclone/checksum/demultiplex/demultiplex_checksum_MD5.match.txt",
-                "rclone/checksum/demultiplex/demultiplex_checksum_MD5.missing_on_src.txt",
-                "rclone/checksum/demultiplex/demultiplex_checksum_SHA256.combined.txt",
-                "rclone/checksum/demultiplex/demultiplex_checksum_SHA256.exit_code.txt",
-                "rclone/checksum/demultiplex/demultiplex_checksum_SHA256.match.txt",
+                "rclone/check_after",
+                "rclone/check_after/demultiplex",
+                "rclone/check_after/demultiplex/demultiplex_check.combined.txt",
+                "rclone/check_after/demultiplex/demultiplex_check.exit_code.txt",
+                "rclone/check_after/demultiplex/demultiplex_check.match.txt",
+                "rclone/checksum_before",
+                "rclone/checksum_before/demultiplex",
+                "rclone/checksum_before/demultiplex/demultiplex_checksum_MD5.combined.txt",
+                "rclone/checksum_before/demultiplex/demultiplex_checksum_MD5.exit_code.txt",
+                "rclone/checksum_before/demultiplex/demultiplex_checksum_MD5.match.txt",
+                "rclone/checksum_before/demultiplex/demultiplex_checksum_MD5.missing_on_src.txt",
+                "rclone/checksum_before/demultiplex/demultiplex_checksum_SHA256.combined.txt",
+                "rclone/checksum_before/demultiplex/demultiplex_checksum_SHA256.exit_code.txt",
+                "rclone/checksum_before/demultiplex/demultiplex_checksum_SHA256.match.txt",
                 "rclone/copy",
                 "rclone/copy/demultiplex-rclone-copy.log"
             ],
@@ -68,12 +68,21 @@
                 "demultiplex_checksum_SHA256.combined.txt:md5,3ae32d27ed8a8e14c3b9b954e23c3839",
                 "demultiplex_checksum_SHA256.exit_code.txt:md5,897316929176464ebc9ad085f31e7284",
                 "demultiplex_checksum_SHA256.match.txt:md5,902e4715d579b7f43a5463a220df8db0"
+            ],
+            [
+                "demultiplex_check.combined.txt:lines,538",
+                "demultiplex_check.match.txt:lines,538",
+                "demultiplex_checksum_MD5.combined.txt:lines,538",
+                "demultiplex_checksum_MD5.match.txt:lines,502",
+                "demultiplex_checksum_MD5.missing_on_src.txt:lines,36",
+                "demultiplex_checksum_SHA256.combined.txt:lines,538",
+                "demultiplex_checksum_SHA256.match.txt:lines,538"
             ]
         ],
-        "timestamp": "2026-09-02T18:28:53.331210181",
+        "timestamp": "2026-09-25T22:12:32.711478602",
         "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.1"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
         }
     }
 }

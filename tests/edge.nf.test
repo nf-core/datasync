@@ -21,15 +21,23 @@ nextflow_pipeline {
             def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
             // stable_content: All files in ${params.outdir}/ with stable content
             def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
-            assert workflow.success
+            def nextflow_log = path("${launchDir}/meta/nextflow.log").text
+            // Summarise rclone outputs by line count
+            def rclone_reports = getAllFilesFromDir(params.outdir, relative: true, include: ['rclone/**/*.txt'])
+            def rclone_line_counts = rclone_reports.findAll { !it.endsWith('.exit_code.txt') }.collect { file -> "${file.tokenize('/').last()}:lines,${path("${params.outdir}/${file}").csv(header: false).rowCount}" }
             assertAll(
+                { assert workflow.success },
+                { assert nextflow_log.contains("The `--download` parameter is enabled") },
+                { assert nextflow_log.contains("it may incur substantial cloud costs") },
                 { assert snapshot(
                     // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
                     removeNextflowVersion("$outputDir/pipeline_info/nf_core_datasync_software_mqc_versions.yml"),
                     // All stable path name, with a relative path
                     stable_path,
                     // All files with stable contents
-                    stable_content
+                    stable_content,
+                    // Number of lines in each rclone check and checksum output
+                    rclone_line_counts
                 ).match() }
             )
         }
@@ -51,15 +59,20 @@ nextflow_pipeline {
             def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
             // stable_content: All files in ${params.outdir}/ with stable content
             def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
-            assert workflow.success
+            // Summarise rclone outputs by line count
+            def rclone_line_counts = getAllFilesFromDir(params.outdir, relative: true, include: ['rclone/**/*.txt'])
+            rclone_line_counts = rclone_line_counts.collect { file -> "${file.tokenize('/').last()}:lines,${path("${params.outdir}/${file}").csv(header: false).rowCount}" }
             assertAll(
+                { assert workflow.success },
                 { assert snapshot(
                     // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
                     removeNextflowVersion("$outputDir/pipeline_info/nf_core_datasync_software_mqc_versions.yml"),
                     // All stable path name, with a relative path
                     stable_path,
                     // All files with stable contents
-                    stable_content
+                    stable_content,
+                    // Number of lines in each rclone check and checksum output
+                    rclone_line_counts
                 ).match() }
             )
         }
@@ -75,7 +88,12 @@ nextflow_pipeline {
         }
 
         then {
-            assert workflow.failed
+            def nextflow_log = path("${launchDir}/meta/nextflow.log").text
+            assertAll(
+                { assert workflow.failed },
+                { assert nextflow_log.contains("A SHA checksum file was provided for one or more remote files") },
+                { assert nextflow_log.contains("Enable `--download` to proceed") }
+            )
         }
     }
 }

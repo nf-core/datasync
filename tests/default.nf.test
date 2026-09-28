@@ -18,15 +18,20 @@ nextflow_pipeline {
             def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
             // stable_content: All files in ${params.outdir}/ with stable content
             def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
-            assert workflow.success
+            // Summarise rclone outputs by line count
+            def rclone_reports = getAllFilesFromDir(params.outdir, relative: true, include: ['rclone/**/*.txt'])
+            def rclone_line_counts = rclone_reports.findAll { !it.endsWith('.exit_code.txt') }.collect { file -> "${file.tokenize('/').last()}:lines,${path("${params.outdir}/${file}").csv(header: false).rowCount}" }
             assertAll(
+                { assert workflow.success },
                 { assert snapshot(
                     // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
                     removeNextflowVersion("$outputDir/pipeline_info/nf_core_datasync_software_mqc_versions.yml"),
                     // All stable path name, with a relative path
                     stable_path,
                     // All files with stable contents
-                    stable_content
+                    stable_content,
+                    // Number of lines in each rclone check and checksum output
+                    rclone_line_counts
                 ).match() }
             )
         }

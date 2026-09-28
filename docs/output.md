@@ -5,7 +5,7 @@
 This document describes the reports produced by nf-core/datasync. Paths below are relative to the directory supplied with `--outdir`.
 
 > [!IMPORTANT]
-> The copied payload is written to each samplesheet row's `output_path`. It is not placed in `--outdir` unless `output_path` explicitly points there.
+> The copied payload is written to each samplesheet row's `output_path`. It is not placed in `--outdir` unless `output_path` explicitly points to the same path as the one specified for `--outdir`.
 
 ## Output overview
 
@@ -14,7 +14,7 @@ This document describes the reports produced by nf-core/datasync. Paths below ar
 ├── rclone/
 │   ├── copy/
 │   │   └── <sample>-rclone-copy.log
-│   ├── checksum/
+│   ├── checksum_before/
 │   │   └── <sample>/
 │   │       ├── <sample>.combined.txt
 │   │       ├── <sample>.match.txt
@@ -22,7 +22,7 @@ This document describes the reports produced by nf-core/datasync. Paths below ar
 │   │       ├── <sample>.missing_on_dst.txt
 │   │       ├── <sample>.missing_on_src.txt
 │   │       └── <sample>.error.txt
-│   └── check/
+│   └── check_after/
 │       └── <sample>/
 │           ├── <sample>.combined.txt
 │           ├── <sample>.match.txt
@@ -38,7 +38,7 @@ This document describes the reports produced by nf-core/datasync. Paths below ar
     └── execution_* / pipeline_dag_*
 ```
 
-The `rclone/` directory is split by module stage. Copy logs are published to `rclone/copy/`, pre-copy checksum validation reports are published to `rclone/checksum/<sample>/`, and post-copy source-to-destination comparison reports are published to `rclone/check/<sample>/`. The `<sample>` directory name is taken from the `sample` value in the samplesheet row.
+The `rclone/` directory is split by module stage. Copy logs are published to `rclone/copy/`, pre-copy checksum validation reports are published to `rclone/checksum_before/<sample>/`, and post-copy source-to-destination comparison reports are published to `rclone/check_after/<sample>/`. The `<sample>` directory name is taken from the `sample` value in the samplesheet row.
 
 ## `rclone` directory
 
@@ -47,14 +47,14 @@ The `rclone/` directory is split by module stage. Copy logs are published to `rc
 
 - `rclone/copy/`
   - `<sample>-rclone-copy.log`: informational log from the copy operation.
-- `rclone/checksum/<sample>/`
+- `rclone/checksum_before/<sample>/`
   - `<sample>.combined.txt`: combined pre-copy checksum-validation status, one path per line.
   - `<sample>.match.txt`: paths whose content matched the supplied checksum manifest (`=`).
   - `<sample>.differ.txt`: paths present in the source and manifest but with different content (`*`).
   - `<sample>.missing_on_dst.txt`: paths present in the checksum manifest but absent from the checked source (`-`).
   - `<sample>.missing_on_src.txt`: paths present in the checked source but absent from the checksum manifest (`+`).
   - `<sample>.error.txt`: paths that could not be read or hashed (`!`).
-- `rclone/check/<sample>/`
+- `rclone/check_after/<sample>/`
   - `<sample>.combined.txt`: combined post-copy source-to-destination comparison status, one path per line.
   - `<sample>.match.txt`: paths whose content matched between source and destination (`=`).
   - `<sample>.differ.txt`: paths present on both sides but with different content (`*`).
@@ -66,8 +66,8 @@ The `rclone/` directory is split by module stage. Copy logs are published to `rc
 
 Two integrity stages create reports:
 
-1. **Pre-copy checksum validation** uses each supplied MD5 and/or SHA-256 manifest to check the source and publishes reports under `rclone/checksum/<sample>/`.
-2. **Post-copy validation** compares the source with the destination after the copy task finishes and publishes reports under `rclone/check/<sample>/`.
+1. **Pre-copy checksum validation** uses each supplied MD5 and/or SHA-256 manifest to check the source and publishes reports under `rclone/checksum_before/<sample>/`.
+2. **Post-copy validation** compares the source with the destination after the copy task finishes and publishes reports under `rclone/check_after/<sample>/`.
 
 Both stages use the same `<sample>.*.txt` naming convention and publish to `rclone/`. When a row supplies a checksum manifest, similarly named pre-copy and post-copy files may target the same published path; use the consolidated MultiQC sections for the stage-specific summary and retain the Nextflow work directory if both raw report sets must be audited independently.
 
@@ -114,7 +114,7 @@ Exit codes are reported using their corresponding rclone descriptions to make it
 
 The MD5 and SHA-256 input-validation sections show the results from [`rclone checksum`](https://rclone.org/commands/rclone_checksum/). Use these sections to confirm that each source file matched the checksum manifest supplied in `checksum_md5` and/or `checksum_sha` before copying.
 
-When a samplesheet `input` points to S3, `rclone checksum` can normally validate MD5 manifests from S3 object hashes, but S3 does not provide SHA-256 object hashes for rclone to read remotely. SHA-256 validation for S3 inputs therefore requires `rclone checksum --download`, which downloads object data and calculates the hash locally during validation. Configure the checksum process to pass `--download` when SHA-256 validation is required for S3 inputs; see the [`rclone checksum` --download documentation](https://rclone.org/commands/rclone_checksum/).
+When a samplesheet `input` points to S3, `rclone checksum` can normally validate MD5 manifests from S3 object hashes, but S3 does not provide SHA-256 object hashes for rclone to read remotely. SHA-256 validation for S3 inputs therefore requires the `--download` pipeline parameter to be enabled, which allows `rclone checksum` to download object data and calculate the hash locally during validation.
 
 ![nf-core/multiqc checksum md5](images/datasync-multiqc-checksum-md5.png)
 

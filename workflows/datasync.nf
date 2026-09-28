@@ -14,6 +14,7 @@ include { softwareVersionsToYAML                   } from '../subworkflows/nf-co
 include { methodsDescriptionText                   } from '../subworkflows/local/utils_nfcore_datasync_pipeline'
 include { parseRcloneCheck                         } from '../subworkflows/local/utils_nfcore_datasync_pipeline'
 include { createExitSummary                        } from '../subworkflows/local/utils_nfcore_datasync_pipeline'
+include { prepareSamplesheet                       } from '../subworkflows/local/utils_nfcore_datasync_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,25 +38,8 @@ workflow DATASYNC {
     ch_multiqc_files = channel.empty()
     ch_rclone_config = rclone_config ? file(rclone_config, checkIfExists: true) : []
 
-    ch_samplesheet = ch_samplesheet.multiMap {
-        meta, input_path, output_path, md5, sha ->
-
-            def normalized_input_path = input_path.toString().replaceFirst('^([a-zA-Z][a-zA-Z0-9+.-]*)://', '$1:')
-            def normalized_output_path = output_path.toString().replaceFirst('^([a-zA-Z][a-zA-Z0-9+.-]*)://', '$1:')
-
-            def source = file(input_path)
-
-            def rclone_destination = source.isFile()
-                ? normalized_output_path.replaceAll('/+$', '')
-                : "${normalized_output_path.replaceAll('/+$', '')}/${source.name}"
-
-            def rclone_check = source.isFile()
-                ? normalized_input_path.replaceFirst('/[^/]+$', '')
-                : normalized_input_path.replaceAll('/+$', '')
-
-            rclone:   [ meta, normalized_input_path, rclone_destination ]
-            checksum: [ meta, md5, sha, rclone_check ]
-    }
+    ch_samplesheet = prepareSamplesheet(ch_samplesheet)
+    ch_rclone = ch_samplesheet.rclone
 
     // Group input md5sum/shasum with their respective generated checksum
     ch_checksum = ch_samplesheet.checksum
@@ -116,14 +100,14 @@ workflow DATASYNC {
 
                 common ? tuple(meta, common) : null
             }
-            .filter { it != null }
+            .filter { common -> common != null }
 
         CREATE_FILTER_LIST(ch_files_to_copy)
 
-        ch_rclone_copy = ch_samplesheet.rclone
+        ch_rclone_copy = ch_rclone
             .join(CREATE_FILTER_LIST.out)
     } else {
-        ch_rclone_copy = ch_samplesheet.rclone.map { meta, source, destination -> [ meta, source, destination, [] ] }
+        ch_rclone_copy = ch_rclone.map { meta, source, destination -> [ meta, source, destination, [] ] }
     }
 
     RCLONE_COPY(
@@ -132,7 +116,7 @@ workflow DATASYNC {
     )
 
     // Wait for file copy to finish before running RCLONE_CHECK
-    ch_rclone_check = ch_samplesheet.rclone
+    ch_rclone_check = ch_rclone
         .join(RCLONE_COPY.out.log, remainder: true)
         .map { meta, input, output, _log -> [ meta, input, output ] }
 
