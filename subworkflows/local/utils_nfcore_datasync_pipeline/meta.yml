@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "PIPELINE_INITIALISATION"
+description: Local utility subworkflow and functions for nf-core/datasync initialisation, completion, rclone report parsing, and MultiQC methods text.
+keywords:
+  - utility
+  - datasync
+  - rclone
+  - multiqc
+components:
+  - utils_nfschema_plugin
+  - completionemail
+  - completionsummary
+  - utils_nfcore_pipeline
+  - utils_nextflow_pipeline
+input:
+  - version:
+      type: boolean
+      description: Display version and exit.
+  - validate_params:
+      type: boolean
+      description: Validate parameters against the schema at runtime.
+  - monochrome_logs:
+      type: boolean
+      description: Disable coloured log output.
+  - nextflow_cli_args:
+      type: list
+      description: Nextflow CLI positional arguments.
+  - outdir:
+      type: string
+      description: Output directory where results are saved.
+  - input:
+      type: string
+      description: Path to the input samplesheet.
+  - help:
+      type: boolean
+      description: Display help message and exit.
+  - help_full:
+      type: boolean
+      description: Display full help message.
+  - show_hidden:
+      type: boolean
+      description: Show hidden parameters in the help message.
+  - email:
+      type: string
+      description: Completion email address.
+  - email_on_fail:
+      type: string
+      description: Failure email address.
+  - plaintext_email:
+      type: boolean
+      description: Send plain-text email instead of HTML.
+  - multiqc_report:
+      type: file
+      description: MultiQC report emitted by the pipeline.
+output:
+  - samplesheet:
+      type: file
+      description: Parsed samplesheet channel.
+  - versions:
+      type: file
+      description: Software versions channel.
+authors:
+  - "@asaracco"
+  - "@delfiterradas"
+  - "@atrigila"
+maintainers:
+  - "@asaracco"
+  - "@delfiterradas"
+  - "@atrigila"

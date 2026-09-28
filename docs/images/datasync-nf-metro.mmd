@@ -1,0 +1,33 @@
+%%metro title: nf-core/datasync
+%%metro mode: dark
+%%metro style: nfcore
+%%metro diamond_style: symmetric
+%%metro line: main | Pipeline | #4CAF50
+
+%%metro file: ref_in | CSV | Input\nSamplesheet | banner
+%%metro file: reads_in | Config | Rclone\nConfig | banner
+%%metro file: report_out | HTML | Report | banner
+%%metro grid: datasync | 0,0
+
+graph LR
+	subgraph datasync [Datasync pipeline]
+        ref_in[Input]
+        reads_in[ ]
+        node1[Rclone\nChecksum]
+        node2[Create\nFilter List]
+        node3[Rclone\nCheck]
+        node4[Rclone\nCopy]
+        node5[MultiQC]
+        Rclone\nChecksum[Rclone\nChecksum]
+        ref_in -->|main| Rclone\nChecksum
+        reads_in -->|main| Rclone\nChecksum
+        report_out[Output]
+        ref_in -->|main| node1
+        reads_in -->|main| node1
+        node1 -->|main| node2
+        node2 -->|main| node4
+        node4 -->|main| node3
+        node3 -->|main| node5
+        node1 -->|main| node4
+        node5 -->|main| report_out
+    end
