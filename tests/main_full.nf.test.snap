@@ -12,7 +12,7 @@
                     "rclone": "1.74.3-DEV"
                 },
                 "Workflow": {
-                    "nf-core/datasync": "v1.0.1"
+                    "nf-core/datasync": "v1.0.2"
                 }
             },
             [
@@ -79,7 +79,7 @@
                 "demultiplex_checksum_SHA256.match.txt:lines,538"
             ]
         ],
-        "timestamp": "2026-10-06T01:56:18.979837766",
+        "timestamp": "2026-10-06T12:24:05.982776133",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
