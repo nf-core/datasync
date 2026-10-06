@@ -12,7 +12,7 @@
                     "rclone": "1.74.3-DEV"
                 },
                 "Workflow": {
-                    "nf-core/datasync": "v1.0.0"
+                    "nf-core/datasync": "v1.0.1"
                 }
             },
             [
@@ -123,9 +123,9 @@
                 "Illumina_annotation_sha_only_checksum_SHA256.exit_code.txt:lines,1"
             ]
         ],
-        "timestamp": "2026-09-25T22:10:33.913797083",
+        "timestamp": "2026-10-06T01:54:24.579962432",
         "meta": {
-            "nf-test": "0.9.4",
+            "nf-test": "0.9.5",
             "nextflow": "25.10.4"
         }
     },
@@ -142,7 +142,7 @@
                     "rclone": "1.74.3-DEV"
                 },
                 "Workflow": {
-                    "nf-core/datasync": "v1.0.0"
+                    "nf-core/datasync": "v1.0.1"
                 }
             },
             [
@@ -245,9 +245,9 @@
                 "Illumina_annotation_sha_only_checksum_SHA256.differ.txt:lines,15"
             ]
         ],
-        "timestamp": "2026-09-25T22:10:13.501072101",
+        "timestamp": "2026-10-06T01:54:04.59605918",
         "meta": {
-            "nf-test": "0.9.4",
+            "nf-test": "0.9.5",
             "nextflow": "25.10.4"
         }
     }

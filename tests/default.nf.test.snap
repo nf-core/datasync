@@ -12,7 +12,7 @@
                     "rclone": "1.74.3-DEV"
                 },
                 "Workflow": {
-                    "nf-core/datasync": "v1.0.0"
+                    "nf-core/datasync": "v1.0.1"
                 }
             },
             [
@@ -88,9 +88,9 @@
                 "benchmark_bed_checksum_MD5.missing_on_src.txt:lines,9"
             ]
         ],
-        "timestamp": "2026-09-25T22:09:52.86634064",
+        "timestamp": "2026-10-06T01:53:44.691524056",
         "meta": {
-            "nf-test": "0.9.4",
+            "nf-test": "0.9.5",
             "nextflow": "25.10.4"
         }
     }
