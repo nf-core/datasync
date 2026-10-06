@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Fixed`
 
-- [[#99](https://github.com/nf-core/datasync/pull/99)] - Bump pipeline's version ([@delfiterradas](https://github.com/delfiterradas), review by ).
+- [[#99](https://github.com/nf-core/datasync/pull/99)] - Bump pipeline's version ([@delfiterradas](https://github.com/delfiterradas), review by [@mashehu](https://github.com/mashehu)).
 
 ## v1.0.1 - 2026-10-02
 
