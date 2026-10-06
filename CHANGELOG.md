@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.0.2 - 2026-10-06
+
+### `Fixed`
+
+- [[#102](https://github.com/nf-core/datasync/pull/102)] - Use the DOI that will always resolve to the latest version ([@delfiterradas](https://github.com/delfiterradas), review by [@atrigila](https://github.com/atrigila)).
+- [[#99](https://github.com/nf-core/datasync/pull/99)] - Bump pipeline's version and add zenodo DOI ([@delfiterradas](https://github.com/delfiterradas), review by [@atrigila](https://github.com/atrigila)).
+
 ## v1.0.1 - 2026-10-02
 
 ### `Fixed`
