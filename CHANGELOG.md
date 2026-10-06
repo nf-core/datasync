@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Fixed`
 
+- [[#102](https://github.com/nf-core/datasync/pull/102)] - Use the DOI that will always resolve to the latest version ([@delfiterradas](https://github.com/delfiterradas), review by [@atrigila](https://github.com/atrigila)).
 - [[#99](https://github.com/nf-core/datasync/pull/99)] - Bump pipeline's version and add zenodo DOI ([@delfiterradas](https://github.com/delfiterradas), review by [@atrigila](https://github.com/atrigila)).
 
 ## v1.0.1 - 2026-10-02
